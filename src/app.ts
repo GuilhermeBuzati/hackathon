@@ -3,6 +3,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { AppDataSource } from './data-source';
 import mainRouter from './routes/main';
+import professorRouter from './routes/professor';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/", mainRouter);
+app.use("/professor", professorRouter)
 
 AppDataSource.initialize()
   .then(() => {
