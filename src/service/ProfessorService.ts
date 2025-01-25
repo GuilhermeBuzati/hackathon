@@ -33,5 +33,11 @@ export class ProfessorService {
     return await this.professorRepository.patchById(professorExistente);
   }
 
+  async deleteById(id: number): Promise<void> {
+
+    const professorExistente = await this.professorRepository.getById(id);
+
+    await this.professorRepository.delete(professorExistente);
+  }
 
 }

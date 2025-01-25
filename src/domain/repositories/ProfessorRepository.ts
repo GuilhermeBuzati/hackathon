@@ -85,4 +85,17 @@ export class ProfessorRepository {
 
     }
   }
+
+  async delete(professor: Professor): Promise<void> {
+    try{
+
+      await this.repository.delete(professor);
+
+    } catch (error) {
+      console.error("Erro desconhecido ao tentar deletar o professor:", error);
+
+      throw new Error('Erro desconhecido ao tentar deletar o professor');
+    }
+
+  }
 }

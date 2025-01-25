@@ -54,6 +54,14 @@ class ProfessorController {
         return res.status(200).json(professor);
     }
 
+    async delete(req: Request, res: Response): Promise<Response> {
+        const id = parseInt(req.params.id);
+
+        await this.service.deleteById(id);
+
+        return res.status(204).json();        
+    }
+
 
     async __validateDTO(dto: ProfessorDTO): Promise<void> {
         const errors = await validate(dto);

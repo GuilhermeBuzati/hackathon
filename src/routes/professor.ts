@@ -35,4 +35,12 @@ professorRouter.patch('/', async (req: Request, res: Response, next: NextFunctio
     }
 });
 
+professorRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await ProfessorController.delete(req, res);
+    } catch (error) {
+      next(error);
+    }
+});
+
 export default professorRouter;
