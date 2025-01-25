@@ -25,6 +25,14 @@ professorRouter.get('/', async (req: Request, res: Response, next: NextFunction)
     } catch (error) {
       next(error);
     }
-  });
+});
+
+professorRouter.patch('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await ProfessorController.patchById(req, res);
+    } catch (error) {
+      next(error);
+    }
+});
 
 export default professorRouter;

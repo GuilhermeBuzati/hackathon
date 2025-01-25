@@ -24,4 +24,14 @@ export class ProfessorService {
     return await this.professorRepository.getAll();
   }
 
+  async patchById(professorDTO: ProfessorDTO): Promise<Professor> {
+
+    const professorExistente = await this.professorRepository.getById(professorDTO.id);
+
+    Object.assign(professorExistente, professorDTO);
+
+    return await this.professorRepository.patchById(professorExistente);
+  }
+
+
 }

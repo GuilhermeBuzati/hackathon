@@ -66,4 +66,23 @@ export class ProfessorRepository {
       throw new Error('Erro ao tentar buscar os professores');
     }
   }
+
+  async patchById(professor: Professor): Promise<Professor> {
+    try {
+ 
+      await this.repository.save(professor);
+      
+      return professor;
+
+    } catch (error: unknown) {
+
+      if (error instanceof QueryFailedError) {
+        if ((error as any).code === PgErrorCodes.UNIQUE_VIOLATION) {
+          throw new EmailJaCadastradoError(professor.email);
+        }
+      }
+      throw new Error('Erro desconhecido ao tentar alterar o professor');
+
+    }
+  }
 }

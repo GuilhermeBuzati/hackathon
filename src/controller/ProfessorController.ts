@@ -43,6 +43,18 @@ class ProfessorController {
         return res.status(200).json(professoresResponse);
     }
 
+    async patchById(req: Request, res: Response): Promise<Response> {   
+
+        const professorDTO = plainToInstance(ProfessorDTO, req.body, { excludeExtraneousValues: true });     
+        
+        await this.__validateDTO(professorDTO);
+
+        const professor = await this.service.patchById(professorDTO);
+
+        return res.status(200).json(professor);
+    }
+
+
     async __validateDTO(dto: ProfessorDTO): Promise<void> {
         const errors = await validate(dto);
         
