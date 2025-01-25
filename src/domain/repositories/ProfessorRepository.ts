@@ -52,4 +52,18 @@ export class ProfessorRepository {
       throw new Error('Erro ao tentar buscar o professor');
     }
   }
+
+  async getAll(): Promise<Professor[]> {
+    try {
+
+      const result = this.repository.find();
+      
+      return result;
+
+    } catch (error) {
+      console.error("Erro ao buscar os lista de professores:", error);
+
+      throw new Error('Erro ao tentar buscar os professores');
+    }
+  }
 }

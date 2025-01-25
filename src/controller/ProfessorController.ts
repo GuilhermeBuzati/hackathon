@@ -31,6 +31,18 @@ class ProfessorController {
 
     }
 
+    async getAll(req: Request, res: Response): Promise<Response> {
+        const professores = await this.service.getAll();
+
+        if (professores.length === 0) {
+            return res.status(204).json();
+        }
+
+        const professoresResponse = professores.map(professor => instanceToPlain(professor));
+
+        return res.status(200).json(professoresResponse);
+    }
+
     async __validateDTO(dto: ProfessorDTO): Promise<void> {
         const errors = await validate(dto);
         

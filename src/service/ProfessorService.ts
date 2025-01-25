@@ -20,4 +20,8 @@ export class ProfessorService {
     return await this.professorRepository.getById(id);
   }
 
+  async getAll(): Promise<Professor[]> {
+    return await this.professorRepository.getAll();
+  }
+
 }
