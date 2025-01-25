@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { AppDataSource } from './data-source';
 import mainRouter from './routes/main';
 import professorRouter from './routes/professor';
+import { errorHandler } from './errors/errorHandler';
 
 dotenv.config();
 
@@ -27,6 +28,8 @@ AppDataSource.initialize()
     console.error('Erro ao conectar ao banco de dados', error);
   });
 
+
+app.use(errorHandler);
 
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);

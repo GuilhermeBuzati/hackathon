@@ -11,5 +11,13 @@ professorRouter.post('/', async (req: Request, res: Response, next: NextFunction
   }
 });
 
+professorRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await ProfessorController.getById(req, res);
+    } catch (error) {
+      next(error);
+    }
+});
+
 
 export default professorRouter;

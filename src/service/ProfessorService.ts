@@ -4,7 +4,7 @@ import { ProfessorDTO } from "../dto/ProfessorDTO";
 
 
 export class ProfessorService {
-  private alimentoRepository = new ProfessorRepository();
+  private professorRepository = new ProfessorRepository();
 
   async createAlimento(professorDTO: ProfessorDTO): Promise<Professor> {
 
@@ -13,6 +13,11 @@ export class ProfessorService {
     professor.email = professorDTO.email;
     professor.senha = professorDTO.senha;
 
-    return await this.alimentoRepository.save(professor);
+    return await this.professorRepository.save(professor);
   }
+
+  async getById(id: number): Promise<Professor> {
+    return await this.professorRepository.getById(id);
+  }
+
 }

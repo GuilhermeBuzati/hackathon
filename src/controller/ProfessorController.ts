@@ -20,6 +20,17 @@ class ProfessorController {
         return res.status(201).json(savedProfessor);
     }
 
+    async getById(req: Request, res: Response): Promise<Response> {
+        const id = parseInt(req.params.id);
+
+        const professor = await this.service.getById(id);
+
+        const professorResponse = instanceToPlain(professor);
+        
+        return res.status(200).json(professorResponse);
+
+    }
+
     async __validateDTO(dto: ProfessorDTO): Promise<void> {
         const errors = await validate(dto);
         
