@@ -4,6 +4,7 @@ import * as dotenv from "dotenv";
 import { Professor } from "./domain/entities/Professor";
 import { Periodo } from "./domain/entities/Periodo";
 import { Materia } from "./domain/entities/Materia";
+import { Tema } from "./domain/entities/Tema";
 
 dotenv.config();
 
@@ -25,7 +26,7 @@ export const AppDataSource = new DataSource({
   synchronize: synchronize,
 //logging logs sql command on the treminal
   logging: log_enable,
-  entities: [Professor, Periodo, Materia],
+  entities: [Professor, Periodo, Materia, Tema],
   migrations: [__dirname + "/migration/*.ts"],
   subscribers: [],
 });
