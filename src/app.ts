@@ -5,6 +5,7 @@ import { AppDataSource } from './data-source';
 import mainRouter from './routes/main';
 import professorRouter from './routes/professor';
 import { errorHandler } from './errors/errorHandler';
+import periodoRouter from './routes/periodo';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/", mainRouter);
 app.use("/professor", professorRouter)
+app.use("/periodo", periodoRouter)
 
 AppDataSource.initialize()
   .then(() => {
