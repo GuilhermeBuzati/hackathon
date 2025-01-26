@@ -6,6 +6,7 @@ import mainRouter from './routes/main';
 import professorRouter from './routes/professor';
 import { errorHandler } from './errors/errorHandler';
 import periodoRouter from './routes/periodo';
+import materiaRouter from './routes/materia';
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use("/", mainRouter);
 app.use("/professor", professorRouter)
 app.use("/periodo", periodoRouter)
+app.use("/materia", materiaRouter)
 
 AppDataSource.initialize()
   .then(() => {

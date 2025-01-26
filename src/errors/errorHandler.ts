@@ -3,6 +3,7 @@ import { ProfessorNaoEncontradoError } from './professor/ProfessorNaoEncontradoE
 import { ProfessorDTOInvalidoError } from './professor/ProfessorDTOInvalidoError';
 import { EmailJaCadastradoError } from './professor/EmailJaCadastradoError';
 import { PeriodoNaoEncontradoError } from './periodo/PeriodoNaoEncontradoError';
+import { MateriaNaoEncontradoError } from './materia/MateriaNaoEncontradoError';
 
 
 //eslint-disable-next-line
@@ -22,6 +23,11 @@ export function errorHandler(error: unknown, req: Request, res: Response, next: 
   if (error instanceof PeriodoNaoEncontradoError) {
     res.status(error.statusCode).json({ message: error.details });
   }
+
+  if (error instanceof MateriaNaoEncontradoError) {
+    res.status(error.statusCode).json({ message: error.details });
+  }
+
 
   console.error(error);
 
