@@ -18,23 +18,6 @@ export class RespostaService {
     return await this.repository.save(resposta);
   }
 
-  async getById(id: number): Promise<Resposta> {
-    return await this.repository.getById(id);
-  }
-
-  async getAll(): Promise<Resposta[]> {
-    return await this.repository.getAll();
-  }
-
-  async patchById(respostaDTO: RespostaDTO): Promise<Resposta> {
-
-    const temaExistente = await this.repository.getById(respostaDTO.id);
-
-    Object.assign(temaExistente, respostaDTO);
-
-    return await this.repository.patchById(temaExistente);
-  }
-
   async deleteById(id: number): Promise<void> {
 
     const temaExistente = await this.repository.getById(id);
