@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Pergunta } from "./Pergunta";
 
 @Entity({ name: "professor" })
 export class Professor {
@@ -13,5 +14,8 @@ export class Professor {
 
   @Column({ type: 'varchar', length: 80, nullable: false})
   senha!: string;
+
+  @OneToMany(() => Pergunta, (pergunta) => pergunta.professor, { cascade: true, onDelete: "CASCADE" })
+  perguntaProfesso!: Pergunta[];
   
 }
