@@ -13,6 +13,7 @@ export class Professor {
   @Column({ type: 'varchar', length: 100, nullable: false})
   email!: string;
 
+  @Exclude({ toPlainOnly: true })
   @Column({ type: 'varchar', length: 80, nullable: false})
   senha!: string;
 

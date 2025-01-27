@@ -15,9 +15,11 @@ class PerguntaController {
 
         await this.__validateDTO(perguntaDTO);
 
-        const savedPergunta = await this.service.create(perguntaDTO);                        
+        const savedPergunta = await this.service.create(perguntaDTO);  
+        
+        const response = instanceToPlain(savedPergunta);
 
-        return res.status(201).json(savedPergunta);
+        return res.status(201).json(response);
     }
 
     async getById(req: Request, res: Response): Promise<Response> {
