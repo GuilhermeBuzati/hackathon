@@ -1,6 +1,8 @@
 import { Expose, Type } from 'class-transformer';
 import { IsNotEmpty, MaxLength, ValidateNested } from 'class-validator';
 import { RespostaDTO } from './RespostaDTO'; // Assumindo que o DTO de Resposta está neste caminho
+import { TemaDTO } from './TemaDTO';
+import { ProfessorDTO } from './ProfessorDTO';
 
 export class PerguntaDTO {
   @Expose()
@@ -13,11 +15,11 @@ export class PerguntaDTO {
 
   @Expose()
   @IsNotEmpty({ message: 'O tema associado à pergunta é obrigatório.' })
-  temaId!: number;
+  tema!: TemaDTO;
 
   @Expose()
   @IsNotEmpty({ message: 'O professor associado à pergunta é obrigatório.' })
-  professorId!: number;
+  professor!: ProfessorDTO;
 
   @Expose()
   @ValidateNested({ each: true })

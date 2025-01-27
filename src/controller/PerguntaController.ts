@@ -15,7 +15,7 @@ class PerguntaController {
 
         await this.__validateDTO(perguntaDTO);
 
-        const savedPergunta = await this.service.create(perguntaDTO);                      
+        const savedPergunta = await this.service.create(perguntaDTO);                        
 
         return res.status(201).json(savedPergunta);
     }

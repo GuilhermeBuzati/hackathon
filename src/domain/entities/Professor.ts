@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
 import { Pergunta } from "./Pergunta";
+import { Exclude } from "class-transformer";
 
 @Entity({ name: "professor" })
 export class Professor {

@@ -17,8 +17,7 @@ export class ProfessorDTO {
 
     @Expose()
     @IsNotEmpty({ message: 'A senha do professor é obrigatório.' })
-    @MaxLength(80, { message: 'A senha do professor deve ter no máximo 50 caracteres.' })
+    @MaxLength(80, { message: 'A senha do professor deve ter no máximo 80 caracteres.' })
     senha!: string;
-
 
 }
