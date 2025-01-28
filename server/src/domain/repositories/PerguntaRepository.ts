@@ -32,8 +32,7 @@ export class PerguntaRepository {
       const result = await this.repository.findOne({
         where: {
             id: id,
-        },
-        relations: ['respostasPergunta', 'tema', 'professor'],
+        }
     });
 
       if (!result) {
@@ -56,16 +55,14 @@ export class PerguntaRepository {
   async getAll(): Promise<Pergunta[]> {
     try {
 
-      const result = this.repository.find({
-        relations: ['respostasPergunta', 'tema', 'professor'],
-      });
+      const result = this.repository.find();
       
       return result;
 
     } catch (error) {
-      console.error("Erro ao buscar os lista de respostas:", error);
+      console.error("Erro ao buscar os lista de perguntas:", error);
 
-      throw new Error('Erro ao tentar buscar os respostas');
+      throw new Error('Erro ao tentar buscar os perguntas');
     }
   }
 

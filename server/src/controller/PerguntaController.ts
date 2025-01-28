@@ -16,8 +16,11 @@ class PerguntaController {
         await this.__validateDTO(perguntaDTO);
 
         const savedPergunta = await this.service.create(perguntaDTO);  
-        
-        const response = instanceToPlain(savedPergunta);
+
+        const response = {
+            ...instanceToPlain(savedPergunta),
+            respostas: savedPergunta.respostas.split('|'),
+          };
 
         return res.status(201).json(response);
     }

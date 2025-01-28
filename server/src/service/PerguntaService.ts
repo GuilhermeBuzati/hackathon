@@ -3,36 +3,24 @@ import { PerguntaRepository } from "../domain/repositories/PerguntaRepository";
 import { ProfessorRepository } from "../domain/repositories/ProfessorRepository";
 import { TemaRepository } from "../domain/repositories/TemaRepository";
 import { PerguntaDTO } from "../dto/PerguntaDTO";
-import { RespostaService } from "./RespostaService";
 
 export class PerguntaService {
   private repository = new PerguntaRepository();
   private temaRepository = new TemaRepository();
   private professorRepository = new ProfessorRepository();
-  private respostaService = new RespostaService();
 
   async create(perguntaDTO: PerguntaDTO): Promise<Pergunta> {
 
-    const tema = await this.temaRepository.getById(perguntaDTO.tema.id);
+    const tema = await this.temaRepository.getById(perguntaDTO.temaId);
     const professor = await this.professorRepository.getById(perguntaDTO.professor.id);
 
     const pergunta = new Pergunta();
     pergunta.descricao = perguntaDTO.descricao;
     pergunta.tema = tema;
     pergunta.professor = professor;
-
-    const perguntaSaved = await this.repository.save(pergunta);
+    pergunta.respostas = perguntaDTO.respostas.join('|');
     
-    const respostasPergunta = await Promise.all(
-      perguntaDTO.respostasPergunta.map(async (resposta) => {
-        resposta.perguntaId = perguntaSaved.id;                
-          return await this.respostaService.create(resposta);
-      })
-    );
-
-    perguntaSaved.respostasPergunta = respostasPergunta;
-
-    return perguntaSaved;
+    return await this.repository.save(pergunta);
   }
 
   async getById(id: number): Promise<Pergunta> {

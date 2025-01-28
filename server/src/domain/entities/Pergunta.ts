@@ -1,7 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
 import { Tema } from "./Tema";
 import { Professor } from "./Professor";
-import { Resposta } from "./Resposta";
 
 @Entity({ name: "pergunta" })
 export class Pergunta {
@@ -23,6 +22,6 @@ export class Pergunta {
   @JoinColumn({ name: "professorId" })
   professor!: Professor;
 
-  @OneToMany(() => Resposta, (resposta) => resposta.pergunta, { cascade: true, onDelete: "CASCADE" })
-  respostasPergunta!: Resposta[];
+  @Column({ type: 'varchar', length: 500, nullable: false})
+  respostas!: string;
 }
