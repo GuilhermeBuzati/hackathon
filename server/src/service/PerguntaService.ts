@@ -32,10 +32,13 @@ export class PerguntaService {
   }
 
   async patchById(perguntaDTO: PerguntaDTO): Promise<Pergunta> {
-
     const perguntaExistente = await this.repository.getById(perguntaDTO.id);
 
     Object.assign(perguntaExistente, perguntaDTO);
+
+    if (perguntaDTO.respostas && Array.isArray(perguntaDTO.respostas)) {
+        perguntaExistente.respostas = perguntaDTO.respostas.join('|');
+    }
 
     return await this.repository.patchById(perguntaExistente);
   }

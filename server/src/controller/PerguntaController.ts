@@ -30,22 +30,27 @@ class PerguntaController {
 
         const pergunta = await this.service.getById(id);
 
-        const perguntaResponse = instanceToPlain(pergunta);
+        const perguntaResponse = {
+            ...instanceToPlain(pergunta),
+            respostas: pergunta.respostas.split('|'),
+        };
         
         return res.status(200).json(perguntaResponse);
 
     }
 
     async getAll(req: Request, res: Response): Promise<Response> {
-        const professores = await this.service.getAll();
+        const perguntas = await this.service.getAll();
 
-        if (professores.length === 0) {
+        if (perguntas.length === 0) {
             return res.status(204).json();
         }
+        const perguntasResponse = perguntas.map(pergunta => ({
+            ...instanceToPlain(pergunta),
+            respostas: pergunta.respostas.split('|'),
+        }));
 
-        const professoresResponse = professores.map(pergunta => instanceToPlain(pergunta));
-
-        return res.status(200).json(professoresResponse);
+        return res.status(200).json(perguntasResponse);
     }
 
     async patchById(req: Request, res: Response): Promise<Response> {   
@@ -56,7 +61,12 @@ class PerguntaController {
 
         const pergunta = await this.service.patchById(perguntaDTO);
 
-        return res.status(200).json(pergunta);
+        const perguntaResponse = {
+            ...instanceToPlain(pergunta),
+            respostas: pergunta.respostas.split('|'),
+        };
+
+        return res.status(200).json(perguntaResponse);
     }
 
     async delete(req: Request, res: Response): Promise<Response> {
