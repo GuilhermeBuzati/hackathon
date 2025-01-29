@@ -11,13 +11,13 @@ O `ProfessorDTO` representa os dados de um professor na aplicação. Ele inclui 
 ### Estrutura - POST - "/professor"
 
 Input
-```typescript
-class ProfessorDTO {
-  nome!: string;
-  email!: string;
-  senha!: string;
-}
-```
+
+    {
+        "nome": "User",
+        "email": "user@gmail.com",
+        "senha": "password"
+    }
+
 Output
 
     {
@@ -29,19 +29,21 @@ Output
 
 ### Estrutura - PATCH - "/professor"
 
-```typescript
-class ProfessorDTO {
-  id: number
-  nome!: string;
-  email!: string;
-  senha!: string;
-}
-```
+Input
+
+    {
+        "id": 5,
+        "nome": "Update User",
+        "email": "user@gmail.com",
+        "senha": "password"
+    }
+
+
 Output
 
     {
         "id": 5,
-        "nome": "User",
+        "nome": "Update User",
         "email": "user@gmail.com",
         "senha": "password"
     }
@@ -86,13 +88,16 @@ O `PerguntaDTO` representa os dados de uma pergunta na aplicação.
 ### Estrutura - POST - "/pergunta"
 
 Input
-```typescript
-class PerguntaDTO {
-  descricao: string;
-  temaId: number;
-  respostas: string[];
-}
-```
+
+    {   
+        "descricao": "Pergunta 1",
+        "temaId": 1,
+        "professor": {
+            "id": 1 //Sessão
+        },
+        "respostas": ["Resposta 1","Resposta 2","Resposta 3"]
+    }
+    
 Output
 
     {
@@ -116,14 +121,18 @@ Output
 
 ### Estrutura - PATCH - "/pergunta"
 
-```typescript
-class PerguntaDTO {
-  id: number;
-  descricao: string;
-  temaId: number;
-  respostas: string[];
-}
-```
+Input 
+
+    {   
+        "id": 1
+        "descricao": "Pergunta 1",
+        "temaId": 1,
+        "professor": {
+            "id": 1 //Sessão
+        },
+        "respostas": ["Resposta 1","Resposta 2","Resposta 3"]
+    }
+
 Output
 
     {
@@ -192,13 +201,14 @@ O `TemaDTO` representa os dados de um tema na aplicação.
 ### Estrutura - POST - "/tema"
 
 Input
-```typescript
-class TemaDTO {
-  descricao: string;
-  periodoId: number;
-  materiaId: number;
-}
-```
+
+    {
+        "descricao": "Brasil",
+        "materiaId": 1,
+        "periodoId": 1,
+        "id": 1
+    }
+
 Output
 
     {
@@ -216,14 +226,15 @@ Output
 
 ### Estrutura - PATCH - "/tema"
 
-```typescript
-class TemaDTO {
-  id: number;
-  descricao: string;
-  materiaId: number;
-  periodoId: number;
-}
-```
+Input
+
+    {
+        "descricao": "Brasil",
+        "materiaId": 1,
+        "periodoId": 1,
+        "id": 1
+    }
+
 Output
 
     {
