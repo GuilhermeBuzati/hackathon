@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, ManyToMany } from "typeorm";
 import { Tema } from "./Tema";
 import { Professor } from "./Professor";
+import { Prova } from "./Prova";
 
 @Entity({ name: "pergunta" })
 export class Pergunta {
@@ -24,4 +25,7 @@ export class Pergunta {
 
   @Column({ type: 'varchar', length: 500, nullable: false})
   respostas!: string;
+  
+  @ManyToMany(() => Prova, (prova) => prova.perguntas)
+  provas!: Prova[];
 }
