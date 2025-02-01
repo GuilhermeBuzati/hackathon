@@ -16,9 +16,7 @@ export class PerguntaDTO {
   @IsNotEmpty({ message: 'O tema associado à pergunta é obrigatório.' })
   temaId!: number;
 
-  @Expose()
-  @IsNotEmpty({ message: 'O professor associado à pergunta é obrigatório.' })
-  professor!: ProfessorDTO;
+  professorId!: number;
 
   @Expose()
   @IsNotEmpty({ message: 'As respostas associado à pergunta é obrigatória.' })

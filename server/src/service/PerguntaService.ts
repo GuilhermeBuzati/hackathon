@@ -12,7 +12,7 @@ export class PerguntaService {
   async create(perguntaDTO: PerguntaDTO): Promise<Pergunta> {
 
     const tema = await this.temaRepository.getById(perguntaDTO.temaId);
-    const professor = await this.professorRepository.getById(perguntaDTO.professor.id);
+    const professor = await this.professorRepository.getById(perguntaDTO.professorId);
 
     const pergunta = new Pergunta();
     pergunta.descricao = perguntaDTO.descricao;

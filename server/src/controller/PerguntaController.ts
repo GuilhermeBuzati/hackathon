@@ -5,13 +5,19 @@ import { PerguntaService } from '../service/PerguntaService';
 import { PerguntaDTO } from '../dto/PerguntaDTO';
 import { PerguntaDTOInvalidoError } from '../errors/pergunta/PerguntaDTOInvalidoError';
 
+interface AuthRequest extends Request {
+    user?: { professorId: number; email: string };
+}
 
 class PerguntaController {
     private service = new PerguntaService();
 
-    async create(req: Request, res: Response): Promise<Response> {
+    async create(req: AuthRequest, res: Response): Promise<Response> {
+        const professorLogado = req.user;
 
         const perguntaDTO = plainToInstance(PerguntaDTO, req.body, { excludeExtraneousValues: true });
+
+        perguntaDTO.professorId = professorLogado!.professorId;
 
         await this.__validateDTO(perguntaDTO);
 

@@ -77,6 +77,19 @@ Output
         }
     ]
 
+### Estrutura - POST - "/pergunta/login"
+
+Input
+
+    {
+        "email": "aluno@gmail.com",
+        "senha": "senha123"
+    }
+
+Output
+
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9mZXNzb3JJZCI6NywiZW1haWwiOiJhbHVub0BnbWFpbC5jb20iLCJpYXQiOjE3MzgzODQxNzcsImV4cCI6MTczODM4Nzc3N30.e8ehJWWXHDwzDYELLgV4IVjCYrMBT3mC_HjOttf7zxk"
+
 ---
 
 ## PerguntaDTO
@@ -92,9 +105,6 @@ Input
     {   
         "descricao": "Pergunta 1",
         "temaId": 1,
-        "professor": {
-            "id": 1 //Sessão
-        },
         "respostas": ["Resposta 1","Resposta 2","Resposta 3"]
     }
     
@@ -499,7 +509,6 @@ Output
 
 ---
 
-
 ## PeriodoDTO
 
 ### Descrição
@@ -562,4 +571,3 @@ Output
     ]
 
 ---
-
