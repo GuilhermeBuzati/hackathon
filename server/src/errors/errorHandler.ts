@@ -25,7 +25,7 @@ export function errorHandler(error: unknown, req: Request, res: Response, next: 
   } 
 
   if (error instanceof EmailJaCadastradoError) {
-    res.status(error.statusCode).json({ error: error });
+    res.status(error.statusCode).json({ error: error.details });
   }
 
   if (error instanceof ProfessorDTOInvalidoError) {

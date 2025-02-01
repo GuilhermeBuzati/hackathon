@@ -8,7 +8,7 @@ export class Tema {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ type: 'varchar', length: 50, nullable: false})
+  @Column({ type: 'varchar', length: 50, nullable: false, unique: true})
   descricao!: string;
   
   @ManyToOne(() => Materia, (materia) => materia.temaMateria, {

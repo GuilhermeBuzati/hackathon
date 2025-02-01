@@ -10,7 +10,7 @@ export class Professor {
   @Column({ type: 'varchar', length: 50, nullable: false})
   nome!: string;
 
-  @Column({ type: 'varchar', length: 100, nullable: false})
+  @Column({ type: 'varchar', length: 100, nullable: false, unique: true})
   email!: string;
 
   @Exclude({ toPlainOnly: true })

@@ -8,7 +8,7 @@ export class Pergunta {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ type: 'varchar', length: 200, nullable: false})
+  @Column({ type: 'varchar', length: 200, nullable: false, unique: true})
   descricao!: string;
   
   @ManyToOne(() => Tema, (tema) => tema.perguntaTema, {

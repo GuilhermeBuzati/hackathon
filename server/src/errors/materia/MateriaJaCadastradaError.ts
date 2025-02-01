@@ -4,11 +4,11 @@ export class MateriaJaCadastradaError extends Error {
   
     // Construtor da exceção personalizada
     constructor(materia: string) {
-      super(`A matéria ${materia} já está cadastrado.`);
+      super(`A matéria ${materia} já está cadastrada.`);
       
       this.name = 'MateriaJaCadastradaError'; 
       this.statusCode = 409; 
-      this.details = `A matéria ${materia} já está cadastrado.`; 
+      this.details = `A matéria ${materia} já está cadastrada.`; 
     }
   }
   
