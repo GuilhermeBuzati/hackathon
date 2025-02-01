@@ -10,7 +10,7 @@ import materiaRouter from './routes/materia';
 import temaRouter from './routes/tema';
 import perguntaRouter from './routes/pergunta';
 import provaRouter from './routes/prova';
-import { authMiddleware } from './middlewares/AuthMiddleware';
+import { authMiddleware } from './middleware/AuthMiddleware';
 
 dotenv.config();
 
