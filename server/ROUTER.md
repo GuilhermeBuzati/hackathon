@@ -432,3 +432,70 @@ Output
             ]
         }
     ]
+
+
+
+## MateriaDTO
+
+### Descrição
+
+O `MateriaDTO` representa os dados de um tema na aplicação. 
+
+### Estrutura - POST - "/materia"
+
+Input
+
+    {
+        "descricao": "Brasil",
+        "periodoId": 1
+    }
+
+Output
+
+    {
+        "descricao": "Brasil",
+        "id": 2
+    }
+
+### Estrutura - PATCH - "/materia"
+
+Input
+
+    {
+        "descricao": "Matematica",
+        "periodoId": 1,
+        "id": 2
+    }
+
+Output
+
+    {
+        "id": 2,
+        "descricao": "Matematica"
+    }
+
+### Estrutura - GET - "/materia/:id"
+
+Output
+
+    {
+        "id": 1,
+        "descricao": "História"
+    }
+
+### Estrutura - GET - "/materia"
+
+Output
+
+    [
+        {
+            "id": 1,
+            "descricao": "História"
+        },
+        {
+            "id": 2,
+            "descricao": "Matematica"
+        }
+    ]
+
+---

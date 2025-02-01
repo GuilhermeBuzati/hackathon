@@ -3,6 +3,14 @@ import MateriaController from '../controller/MateriaController';
 const materiaRouter = express.Router();
 
 
+materiaRouter.post('/', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await MateriaController.create(req, res);
+  } catch (error) {
+    next(error);
+  }
+});
+
 materiaRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
       await MateriaController.getById(req, res);
@@ -19,5 +27,12 @@ materiaRouter.get('/', async (req: Request, res: Response, next: NextFunction) =
     }
 });
 
+materiaRouter.patch('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await MateriaController.patchById(req, res);
+    } catch (error) {
+      next(error);
+    }
+});
 
 export default materiaRouter;
