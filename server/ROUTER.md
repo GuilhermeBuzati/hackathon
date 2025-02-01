@@ -463,7 +463,6 @@ Input
 
     {
         "descricao": "Matematica",
-        "periodoId": 1,
         "id": 2
     }
 

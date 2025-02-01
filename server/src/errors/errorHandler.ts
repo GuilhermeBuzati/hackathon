@@ -12,6 +12,8 @@ import { PerguntaJaCadastradaError } from './pergunta/PerguntaJaCadastradaError'
 import { TemaNaoEncontradoError } from './tema/TemaNaoEncontradoError';
 import { TemaDTOInvalidoError } from './tema/TemaDTOInvalidoError';
 import { TemaJaCadastradoError } from './tema/TemaJaCadastradoError';
+import { MateriaDTOInvalidaError } from './materia/MateriaDTOInvalidaError';
+import { MateriaJaCadastradaError } from './materia/MateriaJaCadastradaError';
 
 
 //eslint-disable-next-line
@@ -33,6 +35,14 @@ export function errorHandler(error: unknown, req: Request, res: Response, next: 
   }
 
   if (error instanceof MateriaNaoEncontradoError) {
+    res.status(error.statusCode).json({ message: error.details });
+  }
+
+  if (error instanceof MateriaDTOInvalidaError) {
+    res.status(error.statusCode).json({ message: error.details });
+  }
+
+  if (error instanceof MateriaJaCadastradaError) {
     res.status(error.statusCode).json({ message: error.details });
   }
 
@@ -67,7 +77,6 @@ export function errorHandler(error: unknown, req: Request, res: Response, next: 
   if (error instanceof TemaJaCadastradoError) {
     res.status(error.statusCode).json({ message: error.details });
   }
-
 
   console.error(error);
 
