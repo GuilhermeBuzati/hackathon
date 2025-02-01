@@ -433,7 +433,7 @@ Output
         }
     ]
 
-
+---
 
 ## MateriaDTO
 
@@ -498,3 +498,68 @@ Output
     ]
 
 ---
+
+
+## PeriodoDTO
+
+### Descrição
+
+O `PeriodoDTO` representa os dados de um tema na aplicação. 
+
+### Estrutura - POST - "/periodo"
+
+Input
+
+    {
+        "descricao": "1º Colegial"
+    }
+
+Output
+
+    {
+        "descricao": "1º Colegial",
+        "id": 2
+    }
+
+### Estrutura - PATCH - "/periodo"
+
+Input
+
+    {
+        "descricao": "1º Série",
+        "id": 2
+    }
+
+Output
+
+    {
+        "id": 2,
+        "descricao": "1º Série"
+    }
+
+### Estrutura - GET - "/periodo/:id"
+
+Output
+
+    {
+        "id": 2,
+        "descricao": "1º Série"
+    }
+
+### Estrutura - GET - "/periodo"
+
+Output
+
+    [
+        {
+            "id": 1,
+            "descricao": "9º Séie"
+        },
+        {
+            "id": 2,
+            "descricao": "1º Série"
+        }
+    ]
+
+---
+

@@ -14,6 +14,8 @@ import { TemaDTOInvalidoError } from './tema/TemaDTOInvalidoError';
 import { TemaJaCadastradoError } from './tema/TemaJaCadastradoError';
 import { MateriaDTOInvalidaError } from './materia/MateriaDTOInvalidaError';
 import { MateriaJaCadastradaError } from './materia/MateriaJaCadastradaError';
+import { PeriodoDTOInvalidoError } from './periodo/PeriodoDTOInvalidoError';
+import { PeriodoJaCadastradoError } from './periodo/PeriodoJaCadastradoError';
 
 
 //eslint-disable-next-line
@@ -75,6 +77,14 @@ export function errorHandler(error: unknown, req: Request, res: Response, next: 
   }
 
   if (error instanceof TemaJaCadastradoError) {
+    res.status(error.statusCode).json({ message: error.details });
+  }
+
+  if (error instanceof PeriodoDTOInvalidoError) {
+    res.status(error.statusCode).json({ message: error.details });
+  }
+
+  if (error instanceof PeriodoJaCadastradoError) {
     res.status(error.statusCode).json({ message: error.details });
   }
 
