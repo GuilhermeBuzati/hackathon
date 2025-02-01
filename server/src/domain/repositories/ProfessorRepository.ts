@@ -4,6 +4,7 @@ import { Professor } from "../entities/Professor";
 import { EmailJaCadastradoError } from "../../errors/professor/EmailJaCadastradoError";
 import { PgErrorCodes } from "../../enums/PgErrorCodes";
 import { ProfessorNaoEncontradoError } from "../../errors/professor/ProfessorNaoEncontradoError";
+import { EmailNaoEncontradoError } from "../../errors/professor/EmailNaoEncontradoError";
 
 export class ProfessorRepository {
   private repository = AppDataSource.getRepository(Professor);
@@ -50,6 +51,32 @@ export class ProfessorRepository {
       }
 
       throw new Error('Erro ao tentar buscar o professor');
+    }
+  }
+
+  async getByEmail(email: string): Promise<Professor> {
+    try {
+
+      const result = await this.repository.findOne({
+        where: {
+          email: email,
+        },
+      });
+
+      if (!result) {
+        throw new EmailNaoEncontradoError(email);
+      }
+
+      return result;
+
+    } catch (error) {
+      console.error("Erro ao buscar o email de professor:", error);
+
+      if (error instanceof EmailNaoEncontradoError) {
+        throw error;
+      }
+
+      throw new Error('Erro ao tentar buscar o email de professor');
     }
   }
 

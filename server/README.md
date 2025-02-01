@@ -13,3 +13,6 @@ npm install typeorm reflect-metadata pg
 npm install class-transformer
 npm install reflect-metadata
 npm install class-validator
+
+npm install jsonwebtoken bcryptjs
+npm install --save-dev @types/jsonwebtoken @types/bcryptjs

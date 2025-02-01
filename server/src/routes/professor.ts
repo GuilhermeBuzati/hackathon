@@ -43,4 +43,12 @@ professorRouter.delete('/:id', async (req: Request, res: Response, next: NextFun
     }
 });
 
+professorRouter.post('/login', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await ProfessorController.login(req, res);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default professorRouter;

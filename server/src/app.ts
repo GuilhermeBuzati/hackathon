@@ -10,6 +10,7 @@ import materiaRouter from './routes/materia';
 import temaRouter from './routes/tema';
 import perguntaRouter from './routes/pergunta';
 import provaRouter from './routes/prova';
+import { authMiddleware } from './middlewares/AuthMiddleware';
 
 dotenv.config();
 
@@ -21,6 +22,8 @@ const PORT = process.env.PORT || 3002;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(authMiddleware);
 
 app.use("/", mainRouter);
 app.use("/professor", professorRouter)

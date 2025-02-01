@@ -16,6 +16,9 @@ import { MateriaDTOInvalidaError } from './materia/MateriaDTOInvalidaError';
 import { MateriaJaCadastradaError } from './materia/MateriaJaCadastradaError';
 import { PeriodoDTOInvalidoError } from './periodo/PeriodoDTOInvalidoError';
 import { PeriodoJaCadastradoError } from './periodo/PeriodoJaCadastradoError';
+import { EmailNaoEncontradoError } from './professor/EmailNaoEncontradoError';
+import { EmailSenhaInvalidosError } from './professor/EmailSenhaInvalidosError';
+import { LoginDTOInvalidoError } from './professor/LoginDTOInvalidoError';
 
 
 //eslint-disable-next-line
@@ -85,6 +88,18 @@ export function errorHandler(error: unknown, req: Request, res: Response, next: 
   }
 
   if (error instanceof PeriodoJaCadastradoError) {
+    res.status(error.statusCode).json({ message: error.details });
+  }
+
+  if (error instanceof EmailNaoEncontradoError) {
+    res.status(error.statusCode).json({ message: error.details });
+  }
+
+  if (error instanceof EmailSenhaInvalidosError) {
+    res.status(error.statusCode).json({ message: error.details });
+  }
+
+  if (error instanceof LoginDTOInvalidoError) {
     res.status(error.statusCode).json({ message: error.details });
   }
 
