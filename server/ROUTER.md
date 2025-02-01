@@ -205,8 +205,7 @@ Input
     {
         "descricao": "Brasil",
         "materiaId": 1,
-        "periodoId": 1,
-        "id": 1
+        "periodoId": 1
     }
 
 Output
@@ -268,4 +267,168 @@ Output
           "id": 2,
           "descricao": "Guerra Mundial"
       }
+    ]
+
+---
+
+## ProvaDTO
+
+### Descrição
+
+O `ProvaDTO` representa os dados de um tema na aplicação. 
+
+### Estrutura - POST - "/prova"
+
+Input
+
+    {
+        "titulo": "Prova de teste",
+        "materiaId": 1,
+        "temaId": 1,
+        "perguntas": [1,2,3]
+    }
+
+Output
+
+    {
+        "titulo": "Prova de teste",
+        "materia": {
+            "id": 1,
+            "descricao": "História"
+        },
+        "perguntas": [
+            {
+                "id": 2,
+                "descricao": "Pergunta 1?",
+                "respostas": [
+                    "r1",
+                    "r2",
+                    "r3"
+                ]
+            },
+            {
+                "id": 1,
+                "descricao": "Pergunta 12?",
+                "respostas": [
+                    "r1",
+                    "r2",
+                    "r3"
+                ]
+            },
+            {
+                "id": 3,
+                "descricao": "Pergunta 12?",
+                "respostas": [
+                    "r1",
+                    "r2",
+                    "r3"
+                ]
+            }
+        ],
+        "id": 3
+    }
+
+### Estrutura - PATCH - "/prova"
+
+Input
+
+    {
+        "titulo": "Prova de teste",
+        "materiaId": 1,
+        "temaId": 1,
+        "perguntas": [1],
+        "id": 23
+    }
+
+Output
+
+    {
+        "id": 1,
+        "titulo": "Prova de teste",
+        "materia": {
+            "id": 1,
+            "descricao": "História"
+        },
+        "perguntas": [
+            {
+                "id": 1,
+                "descricao": "Pergunta 12?",
+                "respostas": [
+                    "r1111",
+                    "r10",
+                    "r3"
+                ]
+            }
+        ]
+    }
+
+
+### Estrutura - GET - "/prova/:id"
+
+Output
+
+    {
+        "id": 2,
+        "titulo": "Prova de teste",
+        "materia": {
+            "id": 1,
+            "descricao": "História"
+        },
+        "perguntas": [
+            {
+                "id": 1,
+                "descricao": "Pergunta 12?",
+                "respostas": [
+                    "r1111",
+                    "r10",
+                    "r3"
+                ]
+            }
+        ]
+    }
+
+
+### Estrutura - GET - "/prova"
+
+Output
+
+    [
+        {
+            "id": 2,
+            "titulo": "Prova de teste",
+            "materia": {
+                "id": 1,
+                "descricao": "História"
+            },
+            "perguntas": [
+                {
+                    "id": 1,
+                    "descricao": "Pergunta 12?",
+                    "respostas": [
+                        "r1111",
+                        "r10",
+                        "r3"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 1,
+            "titulo": "Prova de teste",
+            "materia": {
+                "id": 1,
+                "descricao": "História"
+            },
+            "perguntas": [
+                {
+                    "id": 1,
+                    "descricao": "Pergunta 12?",
+                    "respostas": [
+                        "r1111",
+                        "r10",
+                        "r3"
+                    ]
+                }
+            ]
+        }
     ]

@@ -5,6 +5,13 @@ import { EmailJaCadastradoError } from './professor/EmailJaCadastradoError';
 import { PeriodoNaoEncontradoError } from './periodo/PeriodoNaoEncontradoError';
 import { MateriaNaoEncontradoError } from './materia/MateriaNaoEncontradoError';
 import { PerguntaNaoEncontradoError } from './pergunta/PerguntaNaoEncontradoError';
+import { ProvaDTOInvalidoError } from './prova/ProvaDTOInvalidoError';
+import { ProvaNaoEncontradaError } from './prova/ProvaNaoEncontradaError';
+import { PerguntaDTOInvalidoError } from './pergunta/PerguntaDTOInvalidoError';
+import { PerguntaJaCadastradaError } from './pergunta/PerguntaJaCadastradaError';
+import { TemaNaoEncontradoError } from './tema/TemaNaoEncontradoError';
+import { TemaDTOInvalidoError } from './tema/TemaDTOInvalidoError';
+import { TemaJaCadastradoError } from './tema/TemaJaCadastradoError';
 
 
 //eslint-disable-next-line
@@ -30,6 +37,34 @@ export function errorHandler(error: unknown, req: Request, res: Response, next: 
   }
 
   if (error instanceof PerguntaNaoEncontradoError) {
+    res.status(error.statusCode).json({ message: error.details });
+  }
+
+  if (error instanceof PerguntaDTOInvalidoError) {
+    res.status(error.statusCode).json({ message: error.details });
+  }
+
+  if (error instanceof PerguntaJaCadastradaError) {
+    res.status(error.statusCode).json({ message: error.details });
+  }
+
+  if (error instanceof ProvaDTOInvalidoError) {
+    res.status(error.statusCode).json({ message: error.details });
+  }
+
+  if (error instanceof ProvaNaoEncontradaError) {
+    res.status(error.statusCode).json({ message: error.details });
+  }
+
+  if (error instanceof TemaNaoEncontradoError) {
+    res.status(error.statusCode).json({ message: error.details });
+  }
+
+  if (error instanceof TemaDTOInvalidoError) {
+    res.status(error.statusCode).json({ message: error.details });
+  }
+
+  if (error instanceof TemaJaCadastradoError) {
     res.status(error.statusCode).json({ message: error.details });
   }
 

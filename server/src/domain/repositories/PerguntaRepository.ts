@@ -52,6 +52,19 @@ export class PerguntaRepository {
     }
   }
 
+  async getByIds(ids: number[]): Promise<Pergunta[]> {
+    try {
+      const result = await this.repository.findBy({
+        id: In(ids),
+      });
+  
+      return result;
+    } catch (error) {
+      console.error("Erro ao buscar perguntas:", error);
+      throw new Error("Erro ao tentar buscar as perguntas");
+    }
+  }
+  
   async getAll(): Promise<Pergunta[]> {
     try {
 
