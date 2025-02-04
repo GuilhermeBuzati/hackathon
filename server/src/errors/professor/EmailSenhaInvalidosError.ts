@@ -1,4 +1,4 @@
-export class EmailSenhaInvalidosError extends Error {
+export class EmailSenhaInvalidoError extends Error {
     public statusCode: number;
     public details: string;
   
@@ -6,7 +6,7 @@ export class EmailSenhaInvalidosError extends Error {
     constructor() {
       super(`E-mail ou senha inválidos.`);
       
-      this.name = 'EmailSenhaInvalidosError'; 
+      this.name = 'EmailSenhaInvalidoError'; 
       this.statusCode = 409; 
       this.details = `E-mail ou senha inválidos.`; 
     }

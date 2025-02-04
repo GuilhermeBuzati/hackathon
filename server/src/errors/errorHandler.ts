@@ -17,7 +17,7 @@ import { MateriaJaCadastradaError } from './materia/MateriaJaCadastradaError';
 import { PeriodoDTOInvalidoError } from './periodo/PeriodoDTOInvalidoError';
 import { PeriodoJaCadastradoError } from './periodo/PeriodoJaCadastradoError';
 import { EmailNaoEncontradoError } from './professor/EmailNaoEncontradoError';
-import { EmailSenhaInvalidosError } from './professor/EmailSenhaInvalidosError';
+import { EmailSenhaInvalidoError } from './professor/EmailSenhaInvalidosError';
 import { LoginDTOInvalidoError } from './professor/LoginDTOInvalidoError';
 
 
@@ -95,7 +95,7 @@ export function errorHandler(error: unknown, req: Request, res: Response, next: 
     res.status(error.statusCode).json({ message: error.details });
   }
 
-  if (error instanceof EmailSenhaInvalidosError) {
+  if (error instanceof EmailSenhaInvalidoError) {
     res.status(error.statusCode).json({ message: error.details });
   }
 

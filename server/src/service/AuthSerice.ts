@@ -2,8 +2,9 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { ProfessorRepository } from '../domain/repositories/ProfessorRepository';
-import { EmailSenhaInvalidosError } from '../errors/professor/EmailSenhaInvalidosError';
+import { EmailSenhaInvalidoError } from '../errors/professor/EmailSenhaInvalidosError';
 import { LoginDTO } from '../dto/ProfessorDTO';
+import { EmailNaoEncontradoError } from '../errors/professor/EmailNaoEncontradoError';
 
 export class AuthService {
   private professorRepository = new ProfessorRepository();
@@ -16,7 +17,7 @@ export class AuthService {
 
         const senhaValida = await bcrypt.compare(senha, professor.senha);
         if (!senhaValida) {
-          throw new EmailSenhaInvalidosError();
+          throw new EmailSenhaInvalidoError();
         }
     
         const token = jwt.sign(
@@ -29,7 +30,9 @@ export class AuthService {
     } catch (error) {
       console.error("Problemas ao logar professor", error);
 
-      if (error instanceof EmailSenhaInvalidosError) {
+      if (error instanceof EmailSenhaInvalidoError) {
+        throw error;
+      }else if (error instanceof EmailNaoEncontradoError) {
         throw error;
       }
 
