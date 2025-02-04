@@ -1,0 +1,71 @@
+@forward "./theme/reset.scss";
+@forward "./theme/base.scss";
+@forward "./theme/components/button.scss";
+@forward "./theme/components/chip.scss";
+
+*,
+html,
+body {
+  font-family: "Poppins", sans-serif;
+}
+
+._text-brand {
+  color: var(--color-brand-3);
+}
+
+.routing-enter-from {
+  opacity: 0;
+}
+
+.routing-enter-to,
+.routing-leave-from {
+  opacity: 1;
+}
+
+.routing-enter-from {
+  transform: translateY(-20px);
+}
+
+.routing-enter-active {
+  transition: all 0.2s;
+}
+
+a {
+  text-decoration: none;
+}
+
+* {
+  user-select: none;
+}
+
+*:not(p)::selection {
+  background: var(--color-brand-1);
+  color: var(--color-brand-5);
+}
+
+.modal-enter-from {
+  opacity: 0;
+}
+
+.modal-enter-to,
+.modal-leave-from {
+  opacity: 1;
+}
+
+.modal-enter-from {
+  transform: translateY(-8px);
+}
+
+.modal-enter-active {
+  transition: all 0.3s ease;
+}
+
+.app-back-button {
+  @extend ._text-brand;
+  font-size: 14px;
+  display: block;
+}
+
+._mb-3 {
+  margin-bottom: 8px;
+}

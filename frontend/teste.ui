@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="./teste.xsd"?>
+<interface xmlns="http://www.gtk.org/introspection/core/1.0">
+    <object class="GtkWindow" id="main_window">
+        <property name="title">Minha Janela</property>
+        <property name="default-width">400</property>
+        <property name="default-height">300</property>
+        <child>
+            <object class="GtkButton" id="btn_click">
+                <property name="label">Clique Aqui</property>
+            </object>
+        </child>
+    </object>
+</interface>
