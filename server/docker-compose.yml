@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: . 
+    container_name: api_hackathon
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      - .env
+    volumes:
+      - .:/app 
+      - /app/node_modules 
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:13
+    container_name: db_hackathon
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD} 
+      POSTGRES_DB: hackathon 
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DB_USERNAME}", "-d", "hackathon"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 5s
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
