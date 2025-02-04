@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import TheHeader from "@/components/TheHeader.vue";
 import { useQuestionStore } from "@/store/question_store";
+import { useSubjectStore } from "@/store/subject_store";
 import { onMounted } from "vue";
 
 onMounted(() => {
-  const store = useQuestionStore();
-  store.load();
+  const questionStore = useQuestionStore();
+  const subjectStore = useSubjectStore();
+  questionStore.load();
+  subjectStore.load();
 });
 </script>
 

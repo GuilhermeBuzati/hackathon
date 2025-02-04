@@ -1,57 +1,63 @@
 <script setup lang="ts">
+import AppIcon from "@/components/AppIcon.vue";
 import AppInputText from "@/components/AppInputText.vue";
+import SubjectCreateModal from "@/components/SubjectCreateModal.vue";
+import { useSubjectStore } from "@/store/subject_store";
+import { computed, ref } from "vue";
+
+const store = useSubjectStore();
+const isModalOpen = ref(false);
+
+const text = ref("");
+
+const filtered = computed(() => {
+  if (text.value.trim() === "") {
+    return store.data;
+  }
+
+  const formattedText = text.value.trim().toLowerCase();
+
+  return store.data.filter(s => {
+    return s.description.toLowerCase().includes(formattedText);
+  });
+});
+
+function onOpenModal(): void {
+  isModalOpen.value = true;
+}
 </script>
 
 <template>
   <div class="subject-view">
     <div class="subject-header">
-      <h2 class="title">Grades</h2>
+      <h2 class="title">Matérias</h2>
 
       <div style="display: flex; gap: 8px">
         <AppInputText
+          v-model="text"
           style="width: 340px"
-          icon-start="search" />
-        <button class="app-button -brand">Nova Grade</button>
+          icon-start="search"
+          placeholder="Pesquise matérias" />
+        <button
+          class="app-button -brand"
+          @click="onOpenModal()">
+          <AppIcon name="plus" />
+          Novo
+        </button>
       </div>
     </div>
 
     <div class="subject-grid">
       <RouterLink
-        to=""
+        v-for="item of filtered"
+        :key="item.id"
+        :to="'/subject/' + item.id"
         class="item">
-        Matemática
-      </RouterLink>
-
-      <RouterLink
-        to=""
-        class="item">
-        Matemática
-      </RouterLink>
-
-      <RouterLink
-        to=""
-        class="item">
-        Matemática
-      </RouterLink>
-
-      <RouterLink
-        to=""
-        class="item">
-        Matemática
-      </RouterLink>
-
-      <RouterLink
-        to=""
-        class="item">
-        Matemática
-      </RouterLink>
-
-      <RouterLink
-        to=""
-        class="item">
-        Matemática
+        {{ item.description }}
       </RouterLink>
     </div>
+
+    <SubjectCreateModal v-model:is-open="isModalOpen" />
   </div>
 </template>
 
@@ -79,7 +85,7 @@ import AppInputText from "@/components/AppInputText.vue";
 .subject-grid {
   align-self: stretch;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 24px;
 
   & > .item {

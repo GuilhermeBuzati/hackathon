@@ -8,6 +8,7 @@ interface CustomProps extends /* @vue-ignore */ InputHTMLAttributes {
   iconEnd?: IconName;
   error?: string;
   hasErrors?: boolean;
+  focusInput?: boolean;
 }
 
 const model = defineModel<string>();
@@ -29,7 +30,8 @@ const id = "label-" + useId();
         v-bind="$attrs"
         v-model="model"
         class="native"
-        :id="id" />
+        :id="id"
+        v-focus="focusInput" />
 
       <AppIcon
         v-if="iconStart"

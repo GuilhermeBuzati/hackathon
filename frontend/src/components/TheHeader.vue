@@ -51,7 +51,7 @@ onUnmounted(() => {
           Provas
         </RouterLink>
         <RouterLink
-          to="/subjects"
+          to="/subject"
           class="item"
           active-class="-active">
           Matérias
