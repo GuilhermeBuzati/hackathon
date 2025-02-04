@@ -1,0 +1,122 @@
+.app-button {
+  min-width: 80px;
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: bold;
+  outline: none;
+  border: none;
+
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  color: var(--color-dark-2);
+
+  font-family: "Poppins", sans-serif;
+
+  &:not(.-flat) {
+    background: var(--color-light-2);
+  }
+
+  &.-flat {
+    background: var(--color-light-1);
+  }
+
+  &:not(.-flat):focus,
+  &:not(.-flat):hover {
+    background-color: var(--color-light-3);
+  }
+
+  &:not(.-flat):active {
+    background-color: var(--color-light-4);
+  }
+
+  &.-flat:focus,
+  &.-flat:hover {
+    background-color: var(--color-light-2);
+  }
+
+  &.-flat:active {
+    background-color: var(--color-light-3);
+  }
+
+  // COLORS -- BRAND
+  &:not(.-flat).-brand {
+    color: var(--color-light-1);
+    background-color: var(--color-brand-3);
+  }
+
+  &:not(.-flat).-brand:focus,
+  &:not(.-flat).-brand:hover {
+    background-color: var(--color-brand-4);
+  }
+
+  &:not(.-flat).-brand:active {
+    background-color: var(--color-brand-5);
+  }
+
+  &.-flat.-brand {
+    color: var(--color-brand-3);
+    background-color: var(--color-light-1);
+  }
+
+  &.-flat.-brand:focus,
+  &.-flat.-brand:hover {
+    background-color: var(--color-light-2);
+  }
+
+  &.-flat.-brand:active {
+    background-color: var(--color-light-3);
+  }
+
+  // COLORS -- DANGER
+  &:not(.-flat).-danger {
+    color: var(--color-light-1);
+    background-color: var(--color-danger-3);
+  }
+
+  &:not(.-flat).-danger:focus,
+  &:not(.-flat).-danger:hover {
+    background-color: var(--color-danger-4);
+  }
+
+  &:not(.-flat).-danger:active {
+    background-color: var(--color-danger-5);
+  }
+
+  &.-flat.-danger {
+    color: var(--color-danger-3);
+    background-color: var(--color-light-1);
+  }
+
+  &.-flat.-danger:focus,
+  &.-flat.-danger:hover {
+    background-color: var(--color-light-2);
+  }
+
+  &.-flat.-danger:active {
+    background-color: var(--color-light-3);
+  }
+  //SIZE
+  &.-small {
+    min-height: 32px;
+    padding: 0 8px;
+    font-size: 14px;
+  }
+
+  &.-large {
+    min-height: 48px;
+    padding: 0 24px;
+  }
+
+  &.-icon {
+    padding: 0;
+    aspect-ratio: 1;
+    min-width: 0;
+  }
+}

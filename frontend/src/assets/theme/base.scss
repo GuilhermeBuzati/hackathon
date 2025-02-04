@@ -1,0 +1,30 @@
+/* color palette from <https://github.com/vuejs/theme> */
+:root {
+  --color-brand-1: #99c1f1;
+  --color-brand-2: #62a0ea;
+  --color-brand-3: #3584e4;
+  --color-brand-4: #1c71d8;
+  --color-brand-5: #1a5fb4;
+
+  --color-danger-1: #f66151;
+  --color-danger-2: #ed333b;
+  --color-danger-3: #e01b24;
+  --color-danger-4: #c01c28;
+  --color-danger-5: #a51d2d;
+
+  --color-light-1: #ffffff;
+  --color-light-2: #f6f5f4;
+  --color-light-3: #deddda;
+  --color-light-4: #c0bfbc;
+  --color-light-5: #9a9996;
+
+  --color-dark-1: #77767b;
+  --color-dark-2: #5e5c64;
+  --color-dark-3: #3d3846;
+  --color-dark-4: #241f31;
+  --color-dark-5: #000000;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+}
