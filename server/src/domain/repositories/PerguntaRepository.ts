@@ -10,9 +10,7 @@ export class PerguntaRepository {
 
   async save(pergunta: Pergunta): Promise<Pergunta> {
     try {
-
       return await this.repository.save(pergunta);
-
     } catch (error: unknown) {
       console.error("Erro ao tentar salvar o pergunta:", error);
 
@@ -21,27 +19,24 @@ export class PerguntaRepository {
           throw new PerguntaJaCadastradaError(pergunta.descricao);
         }
       }
-      throw new Error('Erro desconhecido ao tentar salvar o pergunta');
-
+      throw new Error("Erro desconhecido ao tentar salvar o pergunta");
     }
   }
 
   async getById(id: number): Promise<Pergunta> {
     try {
-
       const result = await this.repository.findOne({
         where: {
-            id: id,
+          id: id,
         },
-        relations: ['tema', 'professor']
-    });
+        relations: ["tema", "tema.materia", "professor"],
+      });
 
       if (!result) {
         throw new PerguntaNaoEncontradoError(id);
       }
 
       return result;
-
     } catch (error) {
       console.error("Erro ao buscar o pergunta:", error);
 
@@ -49,7 +44,7 @@ export class PerguntaRepository {
         throw error;
       }
 
-      throw new Error('Erro ao tentar buscar o pergunta');
+      throw new Error("Erro ao tentar buscar o pergunta");
     }
   }
 
@@ -58,99 +53,86 @@ export class PerguntaRepository {
       const result = await this.repository.findBy({
         id: In(ids),
       });
-  
+
       return result;
     } catch (error) {
       console.error("Erro ao buscar perguntas:", error);
       throw new Error("Erro ao tentar buscar as perguntas");
     }
   }
-  
+
   async getAll(): Promise<Pergunta[]> {
     try {
-
-      const result = this.repository.find({        
-        relations: ['tema', 'professor']
+      const result = this.repository.find({
+        relations: ["tema", "tema.materia", "professor"],
       });
-      
-      return result;
 
+      return result;
     } catch (error) {
       console.error("Erro ao buscar os lista de perguntas:", error);
 
-      throw new Error('Erro ao tentar buscar os perguntas');
+      throw new Error("Erro ao tentar buscar os perguntas");
     }
   }
 
   async getByTemaId(temaId: number): Promise<Pergunta[]> {
     try {
-
       const result = this.repository.find({
         where: {
           tema: {
-            id: temaId
-          }
-        }
+            id: temaId,
+          },
+        },
       });
-      
-      return result;
 
+      return result;
     } catch (error) {
       console.error("Erro ao buscar os lista de perguntas:", error);
 
-      throw new Error('Erro ao tentar buscar os perguntas');
+      throw new Error("Erro ao tentar buscar os perguntas");
     }
   }
 
   async getByProfessorId(professorId: number): Promise<Pergunta[]> {
     try {
-
       const result = this.repository.find({
         where: {
           professor: {
-            id: professorId
-          }
-        }
+            id: professorId,
+          },
+        },
       });
-      
-      return result;
 
+      return result;
     } catch (error) {
       console.error("Erro ao buscar os lista de perguntas:", error);
 
-      throw new Error('Erro ao tentar buscar os perguntas');
+      throw new Error("Erro ao tentar buscar os perguntas");
     }
   }
 
   async patchById(pergunta: Pergunta): Promise<Pergunta> {
     try {
- 
       await this.repository.save(pergunta);
-      
+
       return pergunta;
-
     } catch (error: unknown) {
-
       if (error instanceof QueryFailedError) {
         if ((error as any).code === PgErrorCodes.UNIQUE_VIOLATION) {
           throw new PerguntaJaCadastradaError(pergunta.descricao);
         }
       }
-      throw new Error('Erro desconhecido ao tentar alterar o pergunta');
-
+      throw new Error("Erro desconhecido ao tentar alterar o pergunta");
     }
   }
 
   async delete(pergunta: Pergunta): Promise<void> {
-    try{
-
+    try {
       await this.repository.remove(pergunta);
-
     } catch (error) {
       console.error("Erro desconhecido ao tentar deletar o pergunta:", error);
 
-      throw new Error('Erro desconhecido ao tentar deletar o pergunta');
+      throw new Error("Erro desconhecido ao tentar deletar o pergunta");
     }
-
   }
 }

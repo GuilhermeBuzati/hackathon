@@ -94,18 +94,13 @@ const router = createRouter({
         {
           path: "subject/:id",
           name: "subject-edit",
-          props: route => ({ item: route.meta.item }),
           component: () => import("@/views/SubjectEditView.vue"),
           beforeEnter: async (to, _, next) => {
             const id = parseInt(to.params.id as string);
             const subjectStore = useSubjectStore();
-            const item = subjectStore.getItem(id);
-            if (item !== null) {
-              to.meta.item = item;
-              return next();
-            }
-
-            return next("/subject");
+            return subjectStore.getItem(id) === null
+              ? next("/subject")
+              : next();
           },
         },
       ],

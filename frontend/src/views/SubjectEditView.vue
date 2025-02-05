@@ -5,12 +5,17 @@ import SubjectCreateTopic from "@/components/SubjectCreateTopic.vue";
 import SubjectTopic from "@/components/SubjectTopic.vue";
 import type { SubjectModel } from "@/models/subject_model";
 import type { TopicModel } from "@/models/topic_model";
+import { useSubjectStore } from "@/store/subject_store";
 import { useTopicStore } from "@/store/topic_store";
-import { ref } from "vue";
+import { ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 const topicStore = useTopicStore();
+const subjectStore = useSubjectStore();
 
-const props = defineProps<{ item: SubjectModel }>();
+const route = useRoute();
+
+const subject = subjectStore.selectById(Number(route.params.id));
 
 async function onRemove(topic: Omit<TopicModel, "subject">): Promise<void> {
   const error = await topicStore.delete(topic.id);
@@ -25,7 +30,7 @@ async function onCreate(value: {
 }): Promise<void> {
   const error = await topicStore.create(
     value.description,
-    props.item.id,
+    subject.value!.id,
     value.period,
   );
   if (error) {
@@ -49,7 +54,7 @@ const createModal = ref(false);
 
       <div class="header">
         <h2 style="font-weight: bold; font-size: 32px">
-          {{ item.description }}
+          {{ subject!.description }}
         </h2>
         <button class="app-button -danger -icon">
           <AppIcon name="trash" />
@@ -59,9 +64,9 @@ const createModal = ref(false);
 
     <div
       class="topics"
-      v-if="item.topics.length > 0">
+      v-if="subject!.topics?.length > 0">
       <SubjectTopic
-        v-for="topic of item.topics"
+        v-for="topic of subject!.topics"
         :key="topic.id"
         :topic="topic"
         @remove="onRemove(topic)" />

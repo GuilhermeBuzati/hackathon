@@ -19,7 +19,7 @@ export const questionSchema = v.object({
   id: idSchema,
   descricao: v.string(),
   periodo: v.string(),
-  professor: v.optional(teacherSchema),
+  professor: teacherSchema,
   tema: topicSchema,
   respostas: v.array(v.string()),
 });

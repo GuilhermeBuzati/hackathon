@@ -41,6 +41,10 @@ export const useTopicStore = defineStore("topic-store", () => {
       return result.error;
     }
 
+    console.log(result.data);
+    data.value.push(result.data);
+    const subjectStore = useSubjectStore();
+    subjectStore.addTopic(result.data);
     return null;
   };
 
@@ -49,9 +53,7 @@ export const useTopicStore = defineStore("topic-store", () => {
     showWhenSubjectIsEmpty: boolean = true,
   ): ComputedRef<TopicModel[]> => {
     return computed(() => {
-      console.log("OI Q", subject.value);
       if (subject.value === null) {
-        console.log("OI Q 2", subject.value);
         return showWhenSubjectIsEmpty ? data.value : [];
       }
 
@@ -70,6 +72,7 @@ export const useTopicStore = defineStore("topic-store", () => {
     }
 
     const subjectStore = useSubjectStore();
+    subjectStore.removeTopic(id);
     return null;
   };
 

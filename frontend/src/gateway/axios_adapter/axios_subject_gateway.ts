@@ -37,6 +37,7 @@ export class AxiosSubjectGateway implements SubjectGateway {
 
       return ok(parseSubject(response.data));
     } catch (e) {
+      console.log(e);
       if (e instanceof Error) {
         return err(e.message);
       }

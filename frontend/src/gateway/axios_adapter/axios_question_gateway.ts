@@ -47,25 +47,7 @@ export class AxiosQuestionGateway implements QuestionGateway {
 
       return ok(response.data.map(parseQuestion));
     } catch (e) {
-      if (e instanceof Error) {
-        return err(e.message);
-      }
-
-      return err(`${e}`);
-    }
-  }
-
-  async getById(id: number): Promise<Result<QuestionModel | null>> {
-    try {
-      const response = await this.#http.get(`pergunta/${id}`);
-      if (response.status === 204) {
-        return ok(null);
-      }
-
-      console.log(response.data);
-      return ok(parseQuestion(response.data));
-    } catch (e) {
-      console.log("OI OI OI", e);
+      console.log(e);
       if (e instanceof Error) {
         return err(e.message);
       }

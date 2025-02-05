@@ -5,7 +5,6 @@ import { inject, type App, type InjectionKey } from "vue";
 export interface QuestionGateway {
   create(question: CreateQuestionParams): Promise<CreateOutput>;
   getMany(): Promise<Result<QuestionModel[]>>;
-  getById(id: number): Promise<Result<QuestionModel | null>>;
 }
 
 export type CreateQuestionParams = {

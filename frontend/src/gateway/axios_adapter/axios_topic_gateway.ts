@@ -41,8 +41,7 @@ export class AxiosTopicGateway implements TopicGateway {
         periodo: input.period,
       });
 
-      console.log(response);
-      throw "";
+      return ok(parseTopic(response.data));
     } catch (e) {
       if (e instanceof AxiosError) {
         return err(e.response?.data.message ?? "");

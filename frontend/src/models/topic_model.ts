@@ -23,7 +23,7 @@ export type TopicSchema = v.InferInput<typeof topicSchema>;
 
 export function parseTopic(raw: TopicSchema): TopicModel {
   return {
-    id: 1,
+    id: raw.id,
     description: raw.descricao,
     period: raw.periodo,
     subject: {

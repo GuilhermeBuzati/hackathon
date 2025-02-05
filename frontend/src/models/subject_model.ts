@@ -11,12 +11,14 @@ export type SubjectModel = {
 export const subjectSchema = v.object({
   id: idSchema,
   descricao: v.string(),
-  temaMateria: v.array(
-    v.object({
-      id: idSchema,
-      descricao: v.string(),
-      periodo: v.string(),
-    }),
+  temaMateria: v.optional(
+    v.array(
+      v.object({
+        id: idSchema,
+        descricao: v.string(),
+        periodo: v.string(),
+      }),
+    ),
   ),
 });
 
@@ -26,12 +28,13 @@ export function parseSubject(raw: SubjectSchema): SubjectModel {
   return {
     id: raw.id,
     description: raw.descricao,
-    topics: raw.temaMateria.map(item => {
-      return {
-        id: item.id,
-        description: item.descricao,
-        period: item.periodo,
-      };
-    }),
+    topics:
+      raw.temaMateria?.map(item => {
+        return {
+          id: item.id,
+          description: item.descricao,
+          period: item.periodo,
+        };
+      }) ?? [],
   };
 }
