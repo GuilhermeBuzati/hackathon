@@ -24,8 +24,6 @@ export const useSubjectStore = defineStore("subject-store", () => {
     if (result.isOk) {
       data.value.push(result.data);
     }
-
-    dataLoading.value = false;
   };
 
   const getItem = (id: number): SubjectModel | null => {

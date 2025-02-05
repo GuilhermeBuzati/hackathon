@@ -6,19 +6,13 @@ import App from "./App.vue";
 import router from "@/router";
 import { createPinia } from "pinia";
 import di from "./plugins/di";
+import directive from "./plugins/directive";
 
 const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
 app.use(di);
-
-app.directive("focus", {
-  mounted: (el, binding) => {
-    if (binding.value) {
-      el.focus();
-    }
-  },
-});
+app.use(directive);
 
 app.mount("#app");

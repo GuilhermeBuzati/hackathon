@@ -1,5 +1,5 @@
 import type { AxiosInstance } from "axios";
-import type { HttpConfig } from "./http_config";
+import type { HttpConfig } from "../http_config";
 
 export class AxiosHttpConfig implements HttpConfig {
   #instance: AxiosInstance;

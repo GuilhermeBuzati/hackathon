@@ -4,10 +4,12 @@ import * as v from "valibot";
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/valibot";
 import { emailSchema, senhaSchema } from "@/utils/schemas";
-import { useUserStore } from "@/store/user_store";
+import { useTeacherStore } from "@/store/teacher_store";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
-const userStore = useUserStore();
+const router = useRouter();
+const userStore = useTeacherStore();
 
 const loginSchema = v.object({
   email: emailSchema,
@@ -29,7 +31,13 @@ const loading = ref(false);
 
 const onSubmit = handleSubmit(async data => {
   loading.value = true;
-  await userStore.login(data.email, data.password);
+  const error = await userStore.login(data.email, data.password);
+  if (error) {
+    alert(error);
+    return;
+  }
+
+  router.push("/");
   loading.value = false;
 });
 </script>

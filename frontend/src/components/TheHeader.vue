@@ -1,37 +1,55 @@
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from "vue";
+import { onUnmounted, ref, watchEffect } from "vue";
 import AppIcon from "./AppIcon.vue";
+import { useTeacherStore } from "@/store/teacher_store";
+import { useRouter } from "vue-router";
 
 const header = ref<HTMLHeadElement>();
 const applyShadow = ref(false);
+const router = useRouter();
+
+const store = useTeacherStore();
 
 let observer: IntersectionObserver | null = null;
 
-onMounted(() => {
+const dataScroll = ref<HTMLElement | null>(null);
+
+onUnmounted(() => {
+  observer?.disconnect();
+});
+
+watchEffect(() => {
+  if (!dataScroll.value) {
+    return;
+  }
+
+  observer?.disconnect();
+
   observer = new IntersectionObserver(
     ([entry]) => {
-      console.log("OI OI OI", entry);
-      applyShadow.value = entry.isIntersecting;
+      applyShadow.value = !entry.isIntersecting;
     },
     { rootMargin: "0px 0px 0px 0px", threshold: 0.5 },
   );
 
   if (header.value) {
-    observer.observe(header.value);
+    observer.observe(dataScroll.value);
   }
 });
 
-onUnmounted(() => {
-  observer?.disconnect();
-});
+function onLogout(): void {
+  store.logout();
+  router.push("/auth/login");
+}
 </script>
 
 <template>
-  <div class="the-header-container">
-    <header
-      ref="header"
-      class="the-header"
-      :class="{ '-shadow': applyShadow }">
+  <div ref="dataScroll"></div>
+  <header
+    ref="header"
+    class="the-header"
+    :class="{ '-shadow': applyShadow }">
+    <div class="the-header-container">
       <h1 class="title">
         <span class="_text-brand">Hacka</span>
         <span>Prova</span>
@@ -39,13 +57,13 @@ onUnmounted(() => {
 
       <div class="app-header-switcher">
         <RouterLink
-          to="/questions"
+          to="/question"
           class="item"
           active-class="-active">
           Perguntas
         </RouterLink>
         <RouterLink
-          to="/tests"
+          to="/test"
           class="item"
           active-class="-active">
           Provas
@@ -59,38 +77,58 @@ onUnmounted(() => {
       </div>
 
       <div class="config">
-        <p>
-          José Antônio Nunes
+        <div class="name-dropdown">
+          {{ store.user?.name ?? "Invalido" }}
           <AppIcon name="chevron-down" />
-        </p>
+
+          <div class="popup">
+            <button
+              class="app-button -flat -small"
+              style="
+                justify-content: flex-start;
+                padding: 8px 16px;
+                font-weight: 400;
+              "
+              @click="onLogout()">
+              Sair
+            </button>
+          </div>
+        </div>
       </div>
-    </header>
-  </div>
+    </div>
+  </header>
 </template>
 
 <style lang="scss" scoped>
-.the-header-container {
+.the-header {
   position: sticky;
   top: 0;
   container-type: inline-size;
   padding: 4px 12px 0 12px;
   z-index: 2000;
-  max-width: 1024px;
-  margin: 0 auto;
+
   width: 100%;
+  backdrop-filter: blur(48px);
+  background: #ffffffa0;
+
+  border: 1px solid transparent;
+  transition: 0.2s ease;
+
+  &.-shadow {
+    box-shadow: 0 4px 8px #00000014;
+    border-color: var(--color-light-2);
+  }
 }
 
-.the-header {
-  background: #ffffff10;
-  // border: 1px solid var(--color-light-3);
-  border-radius: 8px;
-  backdrop-filter: blur(48px);
-  padding: 8px 16px;
+.the-header-container {
   display: grid;
   grid-template-columns: 240px 1fr 240px;
+  padding: 8px 16px;
+  height: 64px;
   gap: 16px;
   align-items: center;
-  height: 64px;
+  max-width: 1024px;
+  margin: 0 auto;
 
   & > .title {
     font-size: 24px;
@@ -131,6 +169,29 @@ onUnmounted(() => {
 
   & > .item.-active {
     background: var(--color-light-2);
+  }
+}
+
+.name-dropdown {
+  position: relative;
+
+  & > .popup {
+    padding: 4px 0;
+    transition: 0.3s ease;
+    top: calc(100% + 4px);
+    right: 0;
+    left: 0;
+    border: 1px solid var(--color-light-3);
+    box-shadow: 0 4px 8px #00000014;
+    border-radius: 4px;
+    background-color: var(--color-light-1);
+    position: absolute;
+    display: none;
+    flex-direction: column;
+  }
+
+  &:hover > .popup {
+    display: flex;
   }
 }
 </style>

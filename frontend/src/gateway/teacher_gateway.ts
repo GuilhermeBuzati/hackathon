@@ -2,19 +2,24 @@ import type { Result } from "@/utils/result";
 import { inject, type App, type InjectionKey } from "vue";
 
 export interface TeacherGateway {
-  login(params: LoginParams): Promise<LoginResponse>;
-  signIn(params: SignInParams): Promise<SignInResponse>;
+  login(params: LoginParams): Promise<TeacherResult>;
+  signIn(params: SignInParams): Promise<TeacherResult>;
 }
 
 export type LoginParams = { email: string; password: string };
-export type LoginResponse = Result<{ token: string }>;
 
 export type SignInParams = {
   email: string;
   name: string;
   password: string;
 };
-export type SignInResponse = Result<{}>;
+
+export type TeacherResult = Result<{
+  id: number;
+  name: string;
+  email: string;
+  token: string;
+}>;
 
 const key = Symbol() as InjectionKey<TeacherGateway>;
 

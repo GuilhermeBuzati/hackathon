@@ -1,11 +1,10 @@
 import type { Axios } from "axios";
 import type {
   LoginParams,
-  LoginResponse,
   SignInParams,
-  SignInResponse,
+  TeacherResult,
   TeacherGateway,
-} from "./teacher_gateway";
+} from "../teacher_gateway";
 import { err, ok } from "@/utils/result";
 
 export class AxiosTeacherGateway implements TeacherGateway {
@@ -15,14 +14,19 @@ export class AxiosTeacherGateway implements TeacherGateway {
     this.#http = instance;
   }
 
-  async login(params: LoginParams): Promise<LoginResponse> {
+  async login(params: LoginParams): Promise<TeacherResult> {
     try {
       const response = await this.#http.post("/professor/login", {
         email: params.email,
         senha: params.password,
       });
 
-      return ok({ token: response.data.token });
+      return ok({
+        id: response.data.id,
+        name: response.data.nome,
+        email: response.data.email,
+        token: response.data.token,
+      });
     } catch (e) {
       if (e instanceof Error) {
         return err(e.message);
@@ -32,7 +36,7 @@ export class AxiosTeacherGateway implements TeacherGateway {
     }
   }
 
-  async signIn(params: SignInParams): Promise<SignInResponse> {
+  async signIn(params: SignInParams): Promise<TeacherResult> {
     try {
       const response = await this.#http.post("/professor", {
         nome: params.name,
@@ -40,7 +44,12 @@ export class AxiosTeacherGateway implements TeacherGateway {
         senha: params.password,
       });
 
-      return ok({ token: response.data.token });
+      return ok({
+        id: response.data.id,
+        name: response.data.nome,
+        email: response.data.email,
+        token: response.data.token,
+      });
     } catch (e) {
       if (e instanceof Error) {
         return err(e.message);

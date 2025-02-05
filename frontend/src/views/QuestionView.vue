@@ -4,6 +4,8 @@ import AppInputText from "@/components/AppInputText.vue";
 import AppSelect from "@/components/AppSelect.vue";
 import QuestionCard from "@/components/QuestionCard.vue";
 import { useQuestionStore } from "@/store/question_store";
+import AppEmpty from "@/components/AppEmpty.vue";
+import AppLoading from "@/components/AppLoading.vue";
 
 const search = ref("");
 const subject = ref("");
@@ -52,17 +54,18 @@ const periodList = ref(["9º ano", "8º ano", "7º ano", "6º ano"]);
           :options="subjectList" />
 
         <AppSelect
-          v-model="period"
-          label="Período"
-          :options="periodList" />
-
-        <AppSelect
           v-model="theme"
           label="Tema"
           :options="themeList" />
       </aside>
 
-      <div v-if="store.isLoading">Loading...</div>
+      <AppLoading
+        style="margin-top: 40px"
+        v-if="store.isLoading" />
+
+      <AppEmpty
+        style="margin-top: 40px"
+        v-else-if="store.isEmpty" />
 
       <div
         v-else
