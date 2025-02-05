@@ -1,7 +1,8 @@
 import { useSubjectGateway } from "@/gateway/subject_gateway";
 import type { SubjectModel } from "@/models/subject_model";
+import type { TopicModel } from "@/models/topic_model";
 import { defineStore } from "pinia";
-import { readonly, ref, toValue } from "vue";
+import { computed, readonly, ref, toValue, type ComputedRef } from "vue";
 
 export const useSubjectStore = defineStore("subject-store", () => {
   const subjectGateway = useSubjectGateway();
@@ -30,11 +31,36 @@ export const useSubjectStore = defineStore("subject-store", () => {
     return toValue(data.value.find(s => s.id === id) ?? null);
   };
 
+  const selectById = (id: number): ComputedRef<SubjectModel | null> => {
+    return computed(() => data.value.find(s => s.id === id) ?? null);
+  };
+
+  const removeTopic = (topicId: number): void => {
+    for (const item of data.value) {
+      const indexTopic = item.topics.findIndex(s => s.id === topicId);
+      if (indexTopic >= 0) {
+        item.topics.splice(indexTopic, 1);
+      }
+    }
+  };
+
+  const addTopic = (topic: TopicModel): void => {
+    const index = data.value.findIndex(s => s.id === topic.subject.id);
+    console.log("JOVEJOVEJO");
+    if (index >= 0) {
+      data.value[index].topics.push(topic);
+      console.log("OI LINDA");
+    }
+  };
+
   return {
-    data: readonly(data),
+    data: readonly(data) as unknown as SubjectModel[],
     isLoading: readonly(dataLoading),
     load,
     create,
     getItem,
+    removeTopic,
+    selectById,
+    addTopic,
   };
 });

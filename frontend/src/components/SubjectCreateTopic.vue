@@ -1,24 +1,34 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from "vue";
+import AppInputText from "./AppInputText.vue";
 
 const isOpen = defineModel("is-open", { default: false });
 
 const dialogRef = ref<HTMLDialogElement | null>(null);
 
-defineEmits<{
-  confirm: [value: boolean];
+const emits = defineEmits<{
+  create: [value: { description: string; period: string }];
 }>();
 
 watch(isOpen, () => handleModal());
 
 onMounted(() => handleModal());
 
+const description = ref("");
+const period = ref("");
+
 function handleModal(): void {
   if (isOpen.value) {
     dialogRef.value?.showModal();
   } else {
     dialogRef.value?.close();
+    description.value = "";
+    period.value = "";
   }
+}
+
+async function onSave(): Promise<void> {
+  emits("create", { description: description.value, period: period.value });
 }
 </script>
 
@@ -28,35 +38,46 @@ function handleModal(): void {
     @close="isOpen = false"
     @click="isOpen = false">
     <Transition name="modal">
-      <div
-        v-if="isOpen"
+      <form
+        @submit.prevent="onSave()"
         @click.stop
-        class="app-confirmation-modal">
-        <h1
-          class="title"
-          v-if="$slots.title">
-          <slot name="title" />
-        </h1>
+        v-if="isOpen"
+        class="app-create-modal">
+        <h1 class="title">Nova Matéria</h1>
 
         <div
-          class="description"
-          v-if="$slots.description">
-          <slot name="description" />
+          style="
+            align-self: stretch;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+          ">
+          <AppInputText
+            v-model="description"
+            placeholder="Nome"
+            :focus-input="true" />
+
+          <AppInputText
+            v-model="period"
+            placeholder="Periodo" />
         </div>
 
         <div class="actions">
           <button
+            type="submit"
+            class="app-button -brand">
+            Criar
+          </button>
+
+          <button
+            type="button"
             class="app-button"
+            style="order: -1"
             @click="isOpen = false">
             Cancelar
           </button>
-          <button
-            @click="$emit('confirm', true)"
-            class="app-button -danger">
-            Confirmar
-          </button>
         </div>
-      </div>
+      </form>
     </Transition>
   </dialog>
 </template>
@@ -80,7 +101,7 @@ dialog[open] {
   }
 }
 
-.app-confirmation-modal {
+.app-create-modal {
   background: var(--color-light-1);
   width: 400px;
   border-radius: 8px;
@@ -96,10 +117,6 @@ dialog[open] {
     font-size: 24px;
     font-weight: bold;
     line-height: 24px;
-  }
-
-  & > .description {
-    font-size: 16px;
   }
 
   & > .actions {

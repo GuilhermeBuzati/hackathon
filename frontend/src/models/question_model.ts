@@ -1,14 +1,37 @@
 import * as v from "valibot";
-import { userSchema } from "./user_model";
 import { idSchema } from "@/utils/schemas";
+import {
+  parseTeacher,
+  teacherSchema,
+  type TeacherModel,
+} from "./teacher_model";
+import { parseTopic, topicSchema, type TopicModel } from "./topic_model";
+
+export type QuestionModel = {
+  id: number;
+  description: string;
+  teacher: TeacherModel | null;
+  topic: TopicModel;
+  responses: string[];
+};
 
 export const questionSchema = v.object({
   id: idSchema,
   descricao: v.string(),
   periodo: v.string(),
-  professor: v.optional(userSchema),
-  tema: v.string(),
+  professor: teacherSchema,
+  tema: topicSchema,
   respostas: v.array(v.string()),
 });
 
-export type QuestionModel = v.InferOutput<typeof questionSchema>;
+export type QuestionSchema = v.InferOutput<typeof questionSchema>;
+
+export function parseQuestion(raw: QuestionSchema): QuestionModel {
+  return {
+    id: raw.id,
+    description: raw.descricao,
+    responses: raw.respostas,
+    teacher: raw.professor ? parseTeacher(raw.professor) : null,
+    topic: parseTopic(raw.tema),
+  };
+}

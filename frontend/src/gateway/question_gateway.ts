@@ -1,19 +1,20 @@
-import type { QuestionModel } from "@/models/question_model";
+import type { QuestionModel, QuestionSchema } from "@/models/question_model";
 import type { Result } from "@/utils/result";
 import { inject, type App, type InjectionKey } from "vue";
 
 export interface QuestionGateway {
-  create(question: CreateQuestionParams): Promise<null>;
+  create(question: CreateQuestionParams): Promise<CreateOutput>;
   getMany(): Promise<Result<QuestionModel[]>>;
-  getById(id: string): Promise<Result<QuestionModel | null>>;
 }
 
 export type CreateQuestionParams = {
   description: string;
-  subjectId: number;
-  teacherId: string;
+  topicId: number;
+  teacherId: number;
   responses: string[];
 };
+
+export type CreateOutput = Result<QuestionModel>;
 
 const key = Symbol() as InjectionKey<QuestionGateway>;
 

@@ -20,6 +20,7 @@ export class AxiosSubjectGateway implements SubjectGateway {
       const response = await this.#http.get("/materia");
       return ok(response.data.map(parseSubject));
     } catch (e) {
+      console.log("NOVO NOVO", e);
       if (e instanceof Error) {
         return err(e.message);
       }
@@ -36,6 +37,7 @@ export class AxiosSubjectGateway implements SubjectGateway {
 
       return ok(parseSubject(response.data));
     } catch (e) {
+      console.log(e);
       if (e instanceof Error) {
         return err(e.message);
       }

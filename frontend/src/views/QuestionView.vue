@@ -6,28 +6,40 @@ import QuestionCard from "@/components/QuestionCard.vue";
 import { useQuestionStore } from "@/store/question_store";
 import AppEmpty from "@/components/AppEmpty.vue";
 import AppLoading from "@/components/AppLoading.vue";
+import { useSubjectStore } from "@/store/subject_store";
+import type { SubjectModel } from "@/models/subject_model";
+import { useTopicStore } from "@/store/topic_store";
+import type { TopicModel } from "@/models/topic_model";
 
 const search = ref("");
-const subject = ref("");
-const theme = ref("");
-const period = ref("");
+const subject = ref<SubjectModel | null>(null);
+const topic = ref<TopicModel | null>(null);
 
 const store = useQuestionStore();
+const subjectStore = useSubjectStore();
+const topicStore = useTopicStore();
 
 const filteredQuestions = computed(() => {
-  if (search.value.trim() === "") {
-    return store.questions;
+  let data = store.questions.values();
+
+  if (search.value.trim() !== "") {
+    const searchValue = search.value.trim().toLowerCase();
+    data = data.filter(s => s.description.toLowerCase().includes(searchValue));
   }
 
-  const searchValue = search.value.trim().toLowerCase();
-  return store.questions.filter(item => {
-    return item.descricao.toLowerCase().includes(searchValue);
-  });
+  if (subject.value !== null && topic.value === null) {
+    const subjectTopics = new Set(subject.value.topics.map(s => s.id));
+    data = data.filter(s => subjectTopics.has(s.topic.id));
+  }
+
+  if (topic.value !== null) {
+    data = data.filter(s => topic.value?.id === s.topic.id);
+  }
+
+  return data.toArray();
 });
 
-const subjectList = ref(["Matemática", "Português", "Geografia"]);
-const themeList = ref(["Artaxerxes", "Julio Cesar", "Ronaldo Fenômeno"]);
-const periodList = ref(["9º ano", "8º ano", "7º ano", "6º ano"]);
+const topicOptions = topicStore.selectDataBySubject(subject);
 </script>
 
 <template>
@@ -36,7 +48,7 @@ const periodList = ref(["9º ano", "8º ano", "7º ano", "6º ano"]);
       <h2>Minhas Perguntas</h2>
       <RouterLink
         class="app-button -brand"
-        to="/questions/new">
+        to="/question/new">
         Nova Pergunta
       </RouterLink>
     </div>
@@ -51,12 +63,24 @@ const periodList = ref(["9º ano", "8º ano", "7º ano", "6º ano"]);
         <AppSelect
           v-model="subject"
           label="Matéria"
-          :options="subjectList" />
+          option-key="id"
+          :options="subjectStore.data"
+          clear>
+          <template #item="{ value }">
+            {{ value.description }}
+          </template>
+        </AppSelect>
 
         <AppSelect
-          v-model="theme"
+          v-model="topic"
           label="Tema"
-          :options="themeList" />
+          clear
+          option-key="id"
+          :options="topicOptions">
+          <template #item="{ value }">
+            {{ value.description }}
+          </template>
+        </AppSelect>
       </aside>
 
       <AppLoading
@@ -65,7 +89,7 @@ const periodList = ref(["9º ano", "8º ano", "7º ano", "6º ano"]);
 
       <AppEmpty
         style="margin-top: 40px"
-        v-else-if="store.isEmpty" />
+        v-else-if="filteredQuestions.length === 0" />
 
       <div
         v-else
@@ -73,7 +97,7 @@ const periodList = ref(["9º ano", "8º ano", "7º ano", "6º ano"]);
         <RouterLink
           v-for="item in filteredQuestions"
           :key="item.id"
-          :to="`/questions/${item.id}`">
+          :to="`/question/${item.id}`">
           <QuestionCard :item />
         </RouterLink>
       </div>
@@ -87,6 +111,8 @@ const periodList = ref(["9º ano", "8º ano", "7º ano", "6º ano"]);
   max-width: 1024px;
   margin: 0 auto;
   padding: 60px 16px 16px 16px;
+  display: flex;
+  flex-direction: column;
 
   & > .header {
     display: flex;
@@ -106,6 +132,7 @@ const periodList = ref(["9º ano", "8º ano", "7º ano", "6º ano"]);
 .question-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-auto-rows: min-content;
   gap: 24px;
 }
 </style>

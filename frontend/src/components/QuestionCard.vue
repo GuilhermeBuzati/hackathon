@@ -6,14 +6,13 @@ defineProps<{ item: QuestionModel }>();
 
 <template>
   <div class="question-card">
-    <h3 class="title">{{ item.descricao }}</h3>
+    <h3 class="title">{{ item.description }}</h3>
     <ul class="annotations">
-      <li>{{ item.periodo }}</li>
-      <li>{{ item.tema }}</li>
+      <li>{{ item.topic.description }}</li>
       <li>
         Criado por
         <strong style="font-weight: bold">
-          {{ item.professor?.nome ?? "Não identificado" }}
+          {{ item.teacher?.name ?? "Não identificado" }}
         </strong>
       </li>
     </ul>
@@ -25,7 +24,7 @@ defineProps<{ item: QuestionModel }>();
   text-decoration: none;
   box-shadow: 0 2px 4px #00000014;
   border: 1px solid var(--color-light-2);
-  min-height: 200px;
+  min-height: 160px;
   padding: 24px;
   border-radius: 8px;
   transition: 0.2s ease;

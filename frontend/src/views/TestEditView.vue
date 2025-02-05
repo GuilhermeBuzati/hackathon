@@ -3,9 +3,9 @@ import AppIcon from "@/components/AppIcon.vue";
 import AppInputText from "@/components/AppInputText.vue";
 import AppSelect from "@/components/AppSelect.vue";
 import { ref } from "vue";
-import type { QuestionModel } from "@/models/question_model";
+import type { QuestionSchema } from "@/models/question_model";
 
-const questions = ref<QuestionModel[]>([]);
+const questions = ref<QuestionSchema[]>([]);
 
 const title = ref("");
 
@@ -30,11 +30,13 @@ const subject = ref("");
 
         <AppSelect
           v-model="subject"
+          option-key="id"
           label="Matéria"
           :options="[]" />
 
         <AppSelect
           v-model="subject"
+          option-key="id"
           label="Tema (opcional)"
           :options="[]" />
       </div>

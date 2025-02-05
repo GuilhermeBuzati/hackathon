@@ -4,7 +4,7 @@ import type { TeacherModel } from "@/models/teacher_model";
 import { defineStore } from "pinia";
 import { readonly, ref, type Ref } from "vue";
 import { jwtDecode } from "jwt-decode";
-import { isAfter } from "date-fns";
+import { fromUnixTime, isBefore } from "date-fns";
 
 function getTeacherFromStorage(): TeacherModel | null {
   const data = localStorage.getItem("teacher:data");
@@ -25,9 +25,9 @@ function setup(data: Ref<TeacherModel | null>, config: HttpConfig): void {
     return;
   }
 
-  const expirationDate = new Date(jwtDecode(token).exp!);
+  const expirationDate = fromUnixTime(jwtDecode(token).exp!);
   const today = new Date();
-  const isInvalidToken = isAfter(expirationDate, today);
+  const isInvalidToken = isBefore(expirationDate, today);
   if (isInvalidToken) {
     return;
   }
@@ -40,7 +40,7 @@ export const useTeacherStore = defineStore("teacher-store", () => {
   const teacherGateway = useTeacherGateway();
   const httpConfig = useHttpConfig();
 
-  const data = ref<TeacherModel | null>(getTeacherFromStorage());
+  const data = ref<TeacherModel | null>(null);
   setup(data, httpConfig);
 
   const resetStateAndStorage = () => {

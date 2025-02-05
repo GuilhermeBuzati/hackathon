@@ -14,6 +14,8 @@ import {
   AxiosSubjectGateway,
   AxiosTestGateway,
 } from "@/gateway/axios_adapter";
+import { provideTopicGateway } from "@/gateway/topic_gateway";
+import { AxiosTopicGateway } from "@/gateway/axios_adapter/axios_topic_gateway";
 
 export default <Plugin>{
   install(app) {
@@ -26,5 +28,6 @@ export default <Plugin>{
     provideTeacherGateway(app, new AxiosTeacherGateway(instance));
     provideSubjectGateway(app, new AxiosSubjectGateway(instance));
     provideTestGateway(app, new AxiosTestGateway(instance));
+    provideTopicGateway(app, new AxiosTopicGateway(instance));
   },
 };

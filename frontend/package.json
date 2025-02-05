@@ -22,6 +22,7 @@
     "date-fns": "^4.1.0",
     "html2pdf.js": "^0.10.2",
     "jwt-decode": "^4.0.0",
+    "lodash": "^4.17.21",
     "pinia": "^2.3.1",
     "valibot": "^1.0.0-beta.14",
     "vee-validate": "^4.15.0",
@@ -32,6 +33,7 @@
   "devDependencies": {
     "@tsconfig/node22": "^22.0.0",
     "@types/jsdom": "^21.1.7",
+    "@types/lodash": "^4.17.15",
     "@types/node": "^22.10.7",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vitest/eslint-plugin": "1.1.25",

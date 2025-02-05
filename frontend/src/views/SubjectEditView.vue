@@ -1,72 +1,136 @@
 <script lang="ts" setup>
 import AppIcon from "@/components/AppIcon.vue";
-import AppInputTextArea from "@/components/AppInputTextArea.vue";
-import AppInputText from "@/components/AppInputText.vue";
-import AppSelect from "@/components/AppSelect.vue";
-import { onMounted, ref } from "vue";
-import AppConfirmationModal from "@/components/AppConfirmationModal.vue";
-import { useRoute } from "vue-router";
+import SubjectCreateModal from "@/components/SubjectCreateModal.vue";
+import SubjectCreateTopic from "@/components/SubjectCreateTopic.vue";
+import SubjectTopic from "@/components/SubjectTopic.vue";
 import type { SubjectModel } from "@/models/subject_model";
+import type { TopicModel } from "@/models/topic_model";
+import { useSubjectStore } from "@/store/subject_store";
+import { useTopicStore } from "@/store/topic_store";
+import { ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
-const description = ref("");
-
-const materia = ref("");
-
-const tema = ref("");
-
-const responses = ref<string[]>([]);
-
-const responsesEl = ref<HTMLElement | null>(null);
-
-const modalOpen = ref(false);
-
-const isEditing = ref(false);
+const topicStore = useTopicStore();
+const subjectStore = useSubjectStore();
 
 const route = useRoute();
 
-onMounted(() => {
-  const data = route.meta.item as SubjectModel;
-  description.value = data.description;
-});
+const subject = subjectStore.selectById(Number(route.params.id));
+
+async function onRemove(topic: Omit<TopicModel, "subject">): Promise<void> {
+  const error = await topicStore.delete(topic.id);
+  if (error) {
+    alert(error);
+  }
+}
+
+async function onCreate(value: {
+  description: string;
+  period: string;
+}): Promise<void> {
+  const error = await topicStore.create(
+    value.description,
+    subject.value!.id,
+    value.period,
+  );
+  if (error) {
+    alert(error);
+  }
+
+  createModal.value = false;
+}
+
+const createModal = ref(false);
 </script>
 
 <template>
   <div class="subject-edit-view">
-    <RouterLink
-      class="app-back-button _mb-3"
-      to="/subject">
-      <AppIcon name="chevron-left" /> Voltar
-    </RouterLink>
+    <div class="subject-header">
+      <RouterLink
+        class="app-back-button _mb-3"
+        to="/subject">
+        <AppIcon name="chevron-left" /> Voltar
+      </RouterLink>
 
-    <div class="header">
-      <h2 style="font-weight: bold; font-size: 32px">
-        {{ description }}
-      </h2>
-      <div>
-        <button class="app-button -danger -flat">Excluir</button>
-        <button class="app-button -brand">Editar</button>
+      <div class="header">
+        <h2 style="font-weight: bold; font-size: 32px">
+          {{ subject!.description }}
+        </h2>
+        <button class="app-button -danger -icon">
+          <AppIcon name="trash" />
+        </button>
       </div>
     </div>
+
+    <div
+      class="topics"
+      v-if="subject!.topics?.length > 0">
+      <SubjectTopic
+        v-for="topic of subject!.topics"
+        :key="topic.id"
+        :topic="topic"
+        @remove="onRemove(topic)" />
+
+      <div style="display: flex; justify-content: center; margin-top: 8px">
+        <button
+          class="app-button -brand"
+          @click="createModal = true">
+          <AppIcon name="plus" />
+          Adicionar tema
+        </button>
+      </div>
+    </div>
+
+    <div
+      v-else
+      style="
+        margin-top: 160px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 16px;
+      ">
+      <p>Sem temas adicionados</p>
+      <button
+        class="app-button -brand"
+        @click="createModal = true">
+        <AppIcon name="plus" />
+        Adicionar tema
+      </button>
+    </div>
+    <SubjectCreateTopic
+      v-model:is-open="createModal"
+      @create="onCreate($event)" />
   </div>
 </template>
 
 <style lang="scss" scoped>
 .subject-edit-view {
-  max-width: 860px;
+  max-width: 640px;
   padding-top: 60px;
   margin: 0 auto;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: 100%;
 
+  & > .topics {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+.subject-header {
   & > .header {
     margin-bottom: 32px;
-    display: flex;
     align-items: center;
-    justify-content: space-between;
-  }
-
-  & > .grid {
+    gap: 8px;
     display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 64px;
+    grid-template-columns: 1fr auto;
   }
+}
+
+.subject-topic {
+  border: 1px solid var(--color-light-3);
 }
 </style>

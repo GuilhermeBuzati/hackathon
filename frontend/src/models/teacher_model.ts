@@ -7,7 +7,7 @@ export type TeacherModel = {
   email: string;
 };
 
-const teacherSchema = v.object({
+export const teacherSchema = v.object({
   id: idSchema,
   nome: v.string(),
   email: emailSchema,
