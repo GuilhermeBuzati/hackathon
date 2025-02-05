@@ -11,6 +11,11 @@ export class TemaDTO {
   descricao!: string;
 
   @Expose()
+  @IsNotEmpty({ message: 'A descrição de período é obrigatória.' })
+  @MaxLength(50, { message: 'A descrição de período deve ter no máximo 50 caracteres.' })
+  periodo!: string;
+
+  @Expose()
   @IsNotEmpty({ message: 'A matéria associada ao tema é obrigatória.' })
   materiaId!: number;
 

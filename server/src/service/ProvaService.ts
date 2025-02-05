@@ -2,9 +2,7 @@
 import { Prova } from "../domain/entities/Prova";
 import { MateriaRepository } from "../domain/repositories/MateriaRepository";
 import { PerguntaRepository } from "../domain/repositories/PerguntaRepository";
-import { PeriodoRepository } from "../domain/repositories/PeriodoRepository";
 import { ProvaRepository } from "../domain/repositories/ProvaRepository";
-import { TemaRepository } from "../domain/repositories/TemaRepository";
 import { ProvaDTO } from "../dto/ProvaDTO";
 
 

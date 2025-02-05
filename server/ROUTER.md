@@ -215,7 +215,7 @@ Input
     {
         "descricao": "Brasil",
         "materiaId": 1,
-        "periodoId": 1
+        "periodo": "9 Serie",
     }
 
 Output
@@ -224,14 +224,12 @@ Output
         "descricao": "Brasil",
         "materia": {
             "id": 1,
-            "descricao": "História"
+            "descricao": "123"
         },
-        "periodo": {
-            "id": 1,
-            "descricao": "9º série"
-        },
-        "id": 1
+        "periodo": "9 Serie",
+        "id": 3
     }
+
 
 ### Estrutura - PATCH - "/tema"
 
@@ -240,17 +238,18 @@ Input
     {
         "descricao": "Brasil",
         "materiaId": 1,
-        "periodoId": 1,
-        "id": 1
+        "periodo": "10 Serie",
+        "id": 3
     }
+
 
 Output
 
     {
-        "id": 1,
+        "id": 3,
         "descricao": "Brasil",
-        "materiaId": 1,
-        "periodoId": 1
+        "periodo": "10 Serie",
+        "materiaId": 1
     }
 
 
@@ -259,8 +258,9 @@ Output
 Output
 
     {
-        "id": 1,
-        "descricao": "Brasil"
+        "id": 3,
+        "descricao": "Brasil",
+        "periodo": "10 Serie"
     }
 
 
@@ -269,14 +269,16 @@ Output
 Output
 
     [
-      {
-          "id": 1,
-          "descricao": "Brasil"
-      },
-      {
-          "id": 2,
-          "descricao": "Guerra Mundial"
-      }
+        {
+            "id": 2,
+            "descricao": "Guerra Civil",
+            "periodo": "9 Serie"
+        },
+        {
+            "id": 3,
+            "descricao": "Brasil",
+            "periodo": "10 Serie"
+        }
     ]
 
 ---
@@ -294,7 +296,6 @@ Input
     {
         "titulo": "Prova de teste",
         "materiaId": 1,
-        "temaId": 1,
         "perguntas": [1,2,3]
     }
 
@@ -345,7 +346,6 @@ Input
     {
         "titulo": "Prova de teste",
         "materiaId": 1,
-        "temaId": 1,
         "perguntas": [1],
         "id": 23
     }
@@ -457,7 +457,7 @@ Input
 
     {
         "descricao": "Brasil",
-        "periodoId": 1
+        "id": 1
     }
 
 Output
@@ -504,69 +504,6 @@ Output
         {
             "id": 2,
             "descricao": "Matematica"
-        }
-    ]
-
----
-
-## PeriodoDTO
-
-### Descrição
-
-O `PeriodoDTO` representa os dados de um tema na aplicação. 
-
-### Estrutura - POST - "/periodo"
-
-Input
-
-    {
-        "descricao": "1º Colegial"
-    }
-
-Output
-
-    {
-        "descricao": "1º Colegial",
-        "id": 2
-    }
-
-### Estrutura - PATCH - "/periodo"
-
-Input
-
-    {
-        "descricao": "1º Série",
-        "id": 2
-    }
-
-Output
-
-    {
-        "id": 2,
-        "descricao": "1º Série"
-    }
-
-### Estrutura - GET - "/periodo/:id"
-
-Output
-
-    {
-        "id": 2,
-        "descricao": "1º Série"
-    }
-
-### Estrutura - GET - "/periodo"
-
-Output
-
-    [
-        {
-            "id": 1,
-            "descricao": "9º Séie"
-        },
-        {
-            "id": 2,
-            "descricao": "1º Série"
         }
     ]
 

@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import { ProfessorNaoEncontradoError } from './professor/ProfessorNaoEncontradoError';
 import { ProfessorDTOInvalidoError } from './professor/ProfessorDTOInvalidoError';
 import { EmailJaCadastradoError } from './professor/EmailJaCadastradoError';
-import { PeriodoNaoEncontradoError } from './periodo/PeriodoNaoEncontradoError';
 import { MateriaNaoEncontradoError } from './materia/MateriaNaoEncontradoError';
 import { PerguntaNaoEncontradoError } from './pergunta/PerguntaNaoEncontradoError';
 import { ProvaDTOInvalidoError } from './prova/ProvaDTOInvalidoError';
@@ -14,8 +13,6 @@ import { TemaDTOInvalidoError } from './tema/TemaDTOInvalidoError';
 import { TemaJaCadastradoError } from './tema/TemaJaCadastradoError';
 import { MateriaDTOInvalidaError } from './materia/MateriaDTOInvalidaError';
 import { MateriaJaCadastradaError } from './materia/MateriaJaCadastradaError';
-import { PeriodoDTOInvalidoError } from './periodo/PeriodoDTOInvalidoError';
-import { PeriodoJaCadastradoError } from './periodo/PeriodoJaCadastradoError';
 import { EmailNaoEncontradoError } from './professor/EmailNaoEncontradoError';
 import { EmailSenhaInvalidoError } from './professor/EmailSenhaInvalidosError';
 import { LoginDTOInvalidoError } from './professor/LoginDTOInvalidoError';
@@ -35,10 +32,6 @@ export function errorHandler(error: unknown, req: Request, res: Response, next: 
 
   if (error instanceof ProfessorDTOInvalidoError) {
     res.status(error.statusCode).json({ error: error.details });
-  }
-
-  if (error instanceof PeriodoNaoEncontradoError) {
-    res.status(error.statusCode).json({ message: error.details });
   }
 
   if (error instanceof MateriaNaoEncontradoError) {
@@ -82,14 +75,6 @@ export function errorHandler(error: unknown, req: Request, res: Response, next: 
   }
 
   if (error instanceof TemaJaCadastradoError) {
-    res.status(error.statusCode).json({ message: error.details });
-  }
-
-  if (error instanceof PeriodoDTOInvalidoError) {
-    res.status(error.statusCode).json({ message: error.details });
-  }
-
-  if (error instanceof PeriodoJaCadastradoError) {
     res.status(error.statusCode).json({ message: error.details });
   }
 

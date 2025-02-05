@@ -17,10 +17,6 @@ export class ProvaDTO {
   materiaId!: number;
 
   @Expose()
-  @IsNumber({}, { message: "O ID do tema deve ser um número." })
-  temaId: number | undefined;
-
-  @Expose()
   @IsArray({ message: "As perguntas devem ser um array." })
   @ArrayNotEmpty({ message: "A prova deve ter pelo menos uma pergunta." })
   @IsNumber({}, { each: true, message: "Cada pergunta deve ser um número." })

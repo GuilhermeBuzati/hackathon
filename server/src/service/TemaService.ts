@@ -19,6 +19,7 @@ export class TemaService {
     const tema = new Tema();
     tema.descricao = temaDTO.descricao;
     tema.materia = materia;
+    tema.periodo = temaDTO.periodo;
 
     return await this.repository.save(tema);
   }
