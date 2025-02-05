@@ -4,11 +4,11 @@ export class PerguntaJaCadastradaError extends Error {
   
     // Construtor da exceção personalizada
     constructor(pergunta: string) {
-      super(`A pergunta ${pergunta} já está cadastrada.`);
+      super(`A pergunta ${pergunta} já está cadastrada para o tema.`);
       
       this.name = 'PerguntaJaCadastradaError'; 
       this.statusCode = 409; 
-      this.details = `A pergunta ${pergunta} já está cadastrada.`; 
+      this.details = `A pergunta ${pergunta} já está cadastrada para o tema.`; 
     }
   }
   
