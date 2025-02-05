@@ -167,10 +167,15 @@ Output
         "id": 1,
         "descricao": "Pergunta 1",
         "respostas": [
-            "Resposta 1",
-            "Resposta 2",
-            "Resposta 3"
-        ]
+            "23",
+            "24",
+            "25"
+        ],
+        "tema": {
+            "id": 2,
+            "descricao": "História",
+            "periodo": "9 Serie"
+        }
     }
 
 
@@ -179,24 +184,34 @@ Output
 Output
 
     [
-      {
-          "id": 1,
-          "descricao": "Pergunta 1",
-          "respostas": [
-              "Resposta 1",
-              "Resposta 2",
-              "Resposta 3"
-          ]
-      },
-      {
-        "id": 2,
-        "descricao": "Pergunta 2",
-        "respostas": [
-            "Resposta 1",
-            "Resposta 2",
-            "Resposta 3"
-        ]
-      }
+        {
+            "id": 11,
+            "descricao": "Pergunta 1",
+            "respostas": [
+                "23",
+                "24",
+                "25"
+            ],
+            "tema": {
+                "id": 2,
+                "descricao": "História",
+                "periodo": "9 Serie"
+            }
+        },
+        {
+            "id": 3,
+            "descricao": "Pergunta 2",
+            "respostas": [
+                "23",
+                "24",
+                "25"
+            ],
+            "tema": {
+                "id": 2,
+                "descricao": "Geografia",
+                "periodo": "9 Serie"
+            }
+        }
     ]
 
 ---

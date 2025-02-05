@@ -32,7 +32,8 @@ export class PerguntaRepository {
       const result = await this.repository.findOne({
         where: {
             id: id,
-        }
+        },
+        relations: ['tema']
     });
 
       if (!result) {
@@ -68,7 +69,9 @@ export class PerguntaRepository {
   async getAll(): Promise<Pergunta[]> {
     try {
 
-      const result = this.repository.find();
+      const result = this.repository.find({        
+        relations: ['tema']
+      });
       
       return result;
 
