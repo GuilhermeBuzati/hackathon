@@ -5,6 +5,7 @@ import { useQuestionStore } from "@/store/question_store";
 import { useQuestionGateway } from "@/gateway/question_gateway";
 import { useSubjectStore } from "./store/subject_store";
 import { useSubjectGateway } from "./gateway/subject_gateway";
+import { useTeacherStore } from "./store/teacher_store";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -13,23 +14,32 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: MainLayout,
-      beforeEnter: async (to, _, next) => {
+      beforeEnter: async (to, from, next) => {
+        const store = useTeacherStore();
+        if (store.user === null) {
+          return next("/auth/login");
+        }
+
         return next();
       },
       children: [
         {
-          path: "questions",
-          name: "questions",
+          path: "",
+          redirect: "/question",
+        },
+        {
+          path: "question",
+          name: "question",
           component: () => import("@/views/QuestionView.vue"),
         },
         {
-          path: "questions/new",
-          name: "questions-new",
+          path: "question/new",
+          name: "question-new",
           component: () => import("@/views/QuestionEditView.vue"),
         },
         {
-          path: "questions/:id",
-          name: "questions-edit",
+          path: "question/:id",
+          name: "question-edit",
           component: () => import("@/views/QuestionEditView.vue"),
           beforeEnter: async (to, _, next) => {
             const id = to.params.id as string;
@@ -51,7 +61,7 @@ const router = createRouter({
           },
         },
         {
-          path: "tests",
+          path: "test",
           name: "test",
           component: () => import("@/views/TestView.vue"),
         },
@@ -61,22 +71,22 @@ const router = createRouter({
           component: () => import("@/views/TestEditView.vue"),
         },
         {
-          path: "/test/print",
+          path: "test/print",
           name: "test-print",
           component: () => import("@/views/TestPrintView.vue"),
         },
         {
-          path: "/test/:id",
+          path: "test/:id",
           name: "test-edit",
           component: () => import("@/views/TestEditView.vue"),
         },
         {
-          path: "/subject",
+          path: "subject",
           name: "subject",
           component: () => import("@/views/SubjectView.vue"),
         },
         {
-          path: "/subject/:id",
+          path: "subject/:id",
           name: "subject-edit",
           component: () => import("@/views/SubjectEditView.vue"),
           beforeEnter: async (to, _, next) => {

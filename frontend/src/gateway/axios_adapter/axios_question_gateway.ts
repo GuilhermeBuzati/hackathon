@@ -1,6 +1,9 @@
 import type { QuestionModel } from "@/models/question_model";
 import { ok, type Result } from "@/utils/result";
-import type { CreateQuestionParams, QuestionGateway } from "./question_gateway";
+import type {
+  CreateQuestionParams,
+  QuestionGateway,
+} from "../question_gateway";
 import type { Axios } from "axios";
 
 export class AxiosQuestionGateway implements QuestionGateway {

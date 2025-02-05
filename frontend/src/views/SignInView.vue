@@ -4,9 +4,9 @@ import * as v from "valibot";
 import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/valibot";
 import { emailSchema, senhaSchema } from "@/utils/schemas";
-import { useUserStore } from "@/store/user_store";
+import { useTeacherStore } from "@/store/teacher_store";
 
-const userStore = useUserStore();
+const userStore = useTeacherStore();
 
 const signInSchema = v.pipe(
   v.object({

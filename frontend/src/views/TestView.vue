@@ -2,10 +2,15 @@
 import { ref } from "vue";
 import AppInputText from "@/components/AppInputText.vue";
 import AppSelect from "@/components/AppSelect.vue";
+import AppLoading from "@/components/AppLoading.vue";
+import AppEmpty from "@/components/AppEmpty.vue";
 import TestItem from "@/components/TestItem.vue";
 import { useRouter } from "vue-router";
+import { useTestStore } from "@/store/test_store";
 
 const router = useRouter();
+
+const testStore = useTestStore();
 
 const search = ref("");
 const subject = ref("");
@@ -28,7 +33,7 @@ function onPrint(_: string): void {
 
       <RouterLink
         class="app-button -brand"
-        to="/tests/new">
+        to="/test/new">
         Nova Prova
       </RouterLink>
     </div>
@@ -56,8 +61,18 @@ function onPrint(_: string): void {
           :options="themeList" />
       </aside>
 
-      <div class="test-list">
-        <TestItem @print="onPrint($event)" />
+      <AppLoading
+        style="margin-top: 40px"
+        v-if="testStore.isLoading" />
+
+      <AppEmpty
+        style="margin-top: 40px"
+        v-else-if="testStore.isEmpty" />
+
+      <div
+        v-else
+        class="test-list">
+        <TestItem />
       </div>
     </div>
   </div>
