@@ -99,6 +99,26 @@ export class PerguntaRepository {
     }
   }
 
+  async getByProfessorId(professorId: number): Promise<Pergunta[]> {
+    try {
+
+      const result = this.repository.find({
+        where: {
+          professor: {
+            id: professorId
+          }
+        }
+      });
+      
+      return result;
+
+    } catch (error) {
+      console.error("Erro ao buscar os lista de perguntas:", error);
+
+      throw new Error('Erro ao tentar buscar os perguntas');
+    }
+  }
+
   async patchById(pergunta: Pergunta): Promise<Pergunta> {
     try {
  

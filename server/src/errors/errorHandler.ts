@@ -18,6 +18,7 @@ import { EmailSenhaInvalidoError } from './professor/EmailSenhaInvalidosError';
 import { LoginDTOInvalidoError } from './professor/LoginDTOInvalidoError';
 import { MateriaUtilizadaError } from './materia/MateriaUtilizadaError';
 import { TemaUtilizadaError } from './tema/TemaUtilizadaError';
+import { ProfessorUtilizadaError } from './professor/ProfessorUtilizadaError';
 
 
 //eslint-disable-next-line
@@ -95,6 +96,10 @@ export function errorHandler(error: unknown, req: Request, res: Response, next: 
   }
 
   if (error instanceof TemaUtilizadaError) {
+    res.status(error.statusCode).json({ message: error.details });
+  }
+
+  if(error instanceof ProfessorUtilizadaError) {
     res.status(error.statusCode).json({ message: error.details });
   }
   

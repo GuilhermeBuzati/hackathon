@@ -15,13 +15,20 @@ class ProfessorController {
     async create(req: Request, res: Response): Promise<Response> {
 
         const professorDTO = plainToInstance(ProfessorDTO, req.body, { excludeExtraneousValues: true });
-        professorDTO.senha = await this.authService.hashPassword(professorDTO.senha);
+        const senha = professorDTO.senha;
+        professorDTO.senha = await this.authService.hashPassword(senha);
 
         await this.__validateDTO(professorDTO);
 
-        const savedProfessor = await this.service.createAlimento(professorDTO);            
+        const savedProfessor = await this.service.create(professorDTO);   
 
-        return res.status(201).json(savedProfessor);
+        const token = await this.authService.login({ email: savedProfessor.email, senha: senha });
+        
+        const professorResponse = instanceToPlain(savedProfessor);    
+
+        professorResponse.token = token;
+
+        return res.status(201).json(professorResponse);
     }
 
     async getById(req: Request, res: Response): Promise<Response> {
@@ -50,12 +57,16 @@ class ProfessorController {
     async patchById(req: Request, res: Response): Promise<Response> {   
 
         const professorDTO = plainToInstance(ProfessorDTO, req.body, { excludeExtraneousValues: true });     
+
+        professorDTO.senha = await this.authService.hashPassword(professorDTO.senha);
         
         await this.__validateDTO(professorDTO);
 
         const professor = await this.service.patchById(professorDTO);
 
-        return res.status(200).json(professor);
+        const professorResponse = instanceToPlain(professor);    
+
+        return res.status(200).json(professorResponse);
     }
 
     async delete(req: Request, res: Response): Promise<Response> {

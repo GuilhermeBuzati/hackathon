@@ -20,6 +20,9 @@ export class ProfessorDTO {
     @MaxLength(80, { message: 'A senha do professor deve ter no máximo 80 caracteres.' })
     senha!: string;
 
+    @Expose()
+    token!: string;
+
 }
 
 export class LoginDTO {

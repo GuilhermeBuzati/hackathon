@@ -1,12 +1,15 @@
 import { Professor } from "../domain/entities/Professor";
+import { PerguntaRepository } from "../domain/repositories/PerguntaRepository";
 import { ProfessorRepository } from "../domain/repositories/ProfessorRepository";
 import { ProfessorDTO } from "../dto/ProfessorDTO";
+import { ProfessorUtilizadaError } from "../errors/professor/ProfessorUtilizadaError";
 
 
 export class ProfessorService {
   private professorRepository = new ProfessorRepository();
+  private perguntasRepository = new PerguntaRepository();
 
-  async createAlimento(professorDTO: ProfessorDTO): Promise<Professor> {
+  async create(professorDTO: ProfessorDTO): Promise<Professor> {
 
     const professor = new Professor();
     professor.nome = professorDTO.nome;
@@ -34,6 +37,12 @@ export class ProfessorService {
   }
 
   async deleteById(id: number): Promise<void> {
+
+    const perguntasProfessor = await this.perguntasRepository.getByProfessorId(id);
+
+    if (perguntasProfessor.length > 0) {
+      throw new ProfessorUtilizadaError();
+    }
 
     const professorExistente = await this.professorRepository.getById(id);
 

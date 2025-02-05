@@ -21,10 +21,10 @@ Input
 Output
 
     {
-        "id": 5,
-        "nome": "User",
-        "email": "user@gmail.com",
-        "senha": "password"
+        "nome": "Professor",
+        "email": "aluno152@gmail.com",
+        "id": 8,
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9mZXNzb3JJZCI6OCwiZW1haWwiOiJhbHVubzE1MkBnbWFpbC5jb20iLCJpYXQiOjE3Mzg3MjAxMTcsImV4cCI6MTczODcyMzcxN30.WfZDHdlG7CmYrBTyvWDPN0pLjAOMZPYVNTD4kldiZns"
     }
 
 ### Estrutura - PATCH - "/professor"
@@ -44,8 +44,7 @@ Output
     {
         "id": 5,
         "nome": "Update User",
-        "email": "user@gmail.com",
-        "senha": "password"
+        "email": "user@gmail.com"
     }
 
 
@@ -77,7 +76,7 @@ Output
         }
     ]
 
-### Estrutura - POST - "/pergunta/login"
+### Estrutura - POST - "/professor/login"
 
 Input
 
