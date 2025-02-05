@@ -1,29 +1,36 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import AppInputText from "@/components/AppInputText.vue";
 import AppSelect from "@/components/AppSelect.vue";
-import AppLoading from "@/components/AppLoading.vue";
 import AppEmpty from "@/components/AppEmpty.vue";
 import TestItem from "@/components/TestItem.vue";
-import { useRouter } from "vue-router";
 import { useTestStore } from "@/store/test_store";
-
-const router = useRouter();
-
-const testStore = useTestStore();
+import { useSubjectStore } from "@/store/subject_store";
+import type { SubjectModel } from "@/models/subject_model";
+import type { TopicModel } from "@/models/topic_model";
 
 const search = ref("");
-const subject = ref("");
-const theme = ref("");
-const period = ref("");
+const subject = ref<SubjectModel | null>(null);
+const topic = ref<TopicModel | null>(null);
 
-const subjectList = ref(["Matemática", "Português", "Geografia"]);
-const themeList = ref(["Artaxerxes", "Julio Cesar", "Ronaldo Fenômeno"]);
-const periodList = ref(["9º ano", "8º ano", "7º ano", "6º ano"]);
+const store = useTestStore();
+const subjectStore = useSubjectStore();
 
-function onPrint(_: string): void {
-  router.push({ name: "test-print" });
-}
+const filteredTests = computed(() => {
+  let data = store.data.values();
+
+  if (search.value.trim() !== "") {
+    const searchValue = search.value.trim().toLowerCase();
+    data = data.filter(s => s.title.toLowerCase().includes(searchValue));
+  }
+
+  if (subject.value !== null && topic.value === null) {
+    const subjectTopics = new Set(subject.value.topics.map(s => s.id));
+    data = data.filter(s => subjectTopics.has(s.subjectId));
+  }
+
+  return data.toArray();
+});
 </script>
 
 <template>
@@ -48,26 +55,18 @@ function onPrint(_: string): void {
         <AppSelect
           v-model="subject"
           label="Matéria"
-          :options="subjectList" />
-
-        <AppSelect
-          v-model="period"
-          label="Período"
-          :options="periodList" />
-
-        <AppSelect
-          v-model="theme"
-          label="Tema"
-          :options="themeList" />
+          option-key="id"
+          clear
+          :options="subjectStore.data">
+          <template #item="{ value }">
+            {{ value.description }}
+          </template>
+        </AppSelect>
       </aside>
-
-      <AppLoading
-        style="margin-top: 40px"
-        v-if="testStore.isLoading" />
 
       <AppEmpty
         style="margin-top: 40px"
-        v-else-if="testStore.isEmpty" />
+        v-if="filteredTests.length === 0" />
 
       <div
         v-else

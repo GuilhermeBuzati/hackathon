@@ -1,5 +1,5 @@
-<script lang="ts" setup>
-import { useId, ref } from "vue";
+<script lang="ts" setup generic="T extends Object">
+import { useId, ref, watch, toValue } from "vue";
 import AppIcon from "./AppIcon.vue";
 import {
   useFloating,
@@ -9,11 +9,14 @@ import {
   size,
   autoUpdate,
 } from "@floating-ui/vue";
+import { isEqual } from "lodash";
 
 interface CustomProps {
   label?: string;
   placeholder?: string;
-  options: string[];
+  options: T[];
+  clear?: boolean;
+  optionKey: keyof T;
 }
 
 defineOptions({ inheritAttrs: false });
@@ -40,7 +43,7 @@ const { floatingStyles } = useFloating(selectRef, floatingRef, {
   ],
 });
 
-const model = defineModel<string | null>();
+const model = defineModel<T | null>();
 
 const isOpen = ref(false);
 
@@ -60,6 +63,7 @@ function onClose(event?: FocusEvent): void {
 
   isOpen.value = false;
 }
+
 function onTab(event: Event): void {
   if (isOpen.value) {
     event.preventDefault();
@@ -68,7 +72,7 @@ function onTab(event: Event): void {
 }
 
 function onPreview(): void {
-  const index = props.options.findIndex(s => s === model.value);
+  const index = props.options.findIndex(isActive);
   const nextIndex = index - 1;
   if (nextIndex >= 0) {
     model.value = props.options[nextIndex];
@@ -76,30 +80,57 @@ function onPreview(): void {
 }
 
 function onNext(): void {
-  const index = props.options.findIndex(s => s === model.value);
+  const index = props.options.findIndex(isActive);
   const nextIndex = index + 1;
   if (nextIndex < props.options.length) {
     model.value = props.options[nextIndex];
   }
 }
 
-function onSelect(value: string): void {
+function onSelect(value: T): void {
   if (value !== model.value) {
     model.value = value;
     onClose();
     selectRef.value?.focus();
   }
 }
+
+watch(
+  () => props.options,
+  () => {
+    const index = props.options.findIndex(isActive);
+    if (index < 0) {
+      model.value = null;
+    }
+  },
+  { immediate: false },
+);
+
+function isActive(item: T): boolean {
+  return (
+    !!model.value && item[props.optionKey] === model.value[props.optionKey]
+  );
+}
 </script>
 
 <template>
   <div class="app-select-container">
-    <label
-      class="label"
-      :for="id"
-      v-if="label">
-      {{ label }}
-    </label>
+    <div class="app-select-annotation">
+      <label
+        class="label"
+        :for="id"
+        v-if="label">
+        {{ label }}
+      </label>
+
+      <button
+        v-if="clear && model !== null"
+        class="app-button -flat -brand -small"
+        style="padding: 0; min-height: unset; font-size: 12px; min-width: unset"
+        @click="model = null">
+        Limpar
+      </button>
+    </div>
     <div
       v-bind="$attrs"
       class="app-select"
@@ -114,9 +145,20 @@ function onSelect(value: string): void {
       @keydown.up.prevent="onPreview()"
       @keydown.down.prevent="onNext()"
       @blur="onClose($event)">
-      <span style="text-align: left">{{
-        model || placeholder || "Selecione"
-      }}</span>
+      <span style="text-align: left">
+        <template v-if="model === null">
+          {{ placeholder }}
+        </template>
+
+        <slot
+          v-else-if="$slots.item"
+          name="item"
+          :value="model" />
+
+        <template v-else>
+          {{ model }}
+        </template>
+      </span>
       <AppIcon
         class="right"
         name="chevron-down" />
@@ -128,14 +170,30 @@ function onSelect(value: string): void {
         class="app-select-popup"
         :style="floatingStyles">
         <li
-          v-for="item of options"
-          class="item"
-          :class="{ '-active': item === model }"
-          :key="item"
-          @click="onSelect(item)"
-          tabindex="0">
-          {{ item }}
+          v-if="options.length === 0"
+          class="empty">
+          <AppIcon name="filter" />
+          <span>Vazio</span>
         </li>
+
+        <template v-else>
+          <li
+            v-for="item of options"
+            class="item"
+            :class="{ '-active': isActive(item) }"
+            :key="item[optionKey] as any"
+            @click="onSelect(item)"
+            tabindex="0">
+            <slot
+              v-if="$slots.item"
+              name="item"
+              :value="item"></slot>
+
+            <template v-else>
+              {{ item }}
+            </template>
+          </li>
+        </template>
       </ul>
     </Transition>
   </div>
@@ -146,6 +204,12 @@ function onSelect(value: string): void {
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+
+.app-select-annotation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
   & > .label {
     display: block;
@@ -207,6 +271,14 @@ function onSelect(value: string): void {
       var(--color-brand-1) 30%,
       var(--color-light-1) 70%
     );
+  }
+  & > .empty {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    color: var(--color-dark-2);
+    justify-content: center;
+    padding: 8px 16px;
   }
 }
 

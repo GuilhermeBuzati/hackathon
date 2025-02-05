@@ -38,7 +38,7 @@ async function onSave(): Promise<void> {
     <Transition name="modal">
       <form
         @submit.prevent="onSave()"
-        @click.stop=""
+        @click.stop
         v-if="isOpen"
         class="app-create-modal">
         <h1 class="title">Nova Matéria</h1>
@@ -54,7 +54,7 @@ async function onSave(): Promise<void> {
           <button
             type="submit"
             class="app-button -brand">
-            Confirmar
+            Create
           </button>
 
           <button

@@ -8,16 +8,31 @@ import { useDraggable } from "vue-draggable-plus";
 import AppConfirmationModal from "@/components/AppConfirmationModal.vue";
 import { useRoute } from "vue-router";
 import type { QuestionModel } from "@/models/question_model";
+import { useQuestionStore } from "@/store/question_store";
+import { useSubjectStore } from "@/store/subject_store";
+import { useTopicStore } from "@/store/topic_store";
+import type { SubjectModel } from "@/models/subject_model";
+import type { TopicModel } from "@/models/topic_model";
 
-const description = ref("");
+const store = useQuestionStore();
+const subjectStore = useSubjectStore();
+const topicStore = useTopicStore();
 
-const materia = ref("");
+const { item = null } = defineProps<{ item?: QuestionModel }>();
 
-const tema = ref("");
+console.log(item);
 
-const responses = ref<string[]>([]);
+const description = ref(item?.description ?? "");
+
+const subject = ref<SubjectModel | null>(item?.topic?.subject ?? null);
+
+const topic = ref<TopicModel | null>(item?.topic ?? null);
+
+const responses = ref<string[]>(item?.responses ?? []);
 
 const responsesEl = ref<HTMLElement | null>(null);
+
+const topicOptions = topicStore.selectDataBySubject(subject, false);
 
 const modalOpen = ref(false);
 
@@ -25,22 +40,20 @@ const isEditing = ref(false);
 
 const route = useRoute();
 
-onMounted(() => {
-  const data = route.meta.item as QuestionModel | undefined | null;
-  if (data) {
-    isEditing.value = true;
-    description.value = data.descricao;
-    tema.value = data.tema;
-    responses.value = data.respostas;
-  }
-});
-
 function onRemoveResposta(index: number): void {
   responses.value.splice(index, 1);
 }
 
 function onAddResponse(): void {
   responses.value.push("");
+}
+
+async function onSubmit(): Promise<void> {
+  if (responses.value.length === 0) {
+    return;
+  }
+
+  await store.create(description.value, topic.value!.id, responses.value);
 }
 
 useDraggable(responsesEl, responses, {
@@ -56,7 +69,7 @@ useDraggable(responsesEl, responses, {
   <div class="question-edit-view">
     <RouterLink
       class="app-back-button _mb-3"
-      to="/questions">
+      to="/question">
       <AppIcon name="chevron-left" /> Voltar
     </RouterLink>
 
@@ -75,14 +88,24 @@ useDraggable(responsesEl, responses, {
     <div class="grid">
       <div style="display: flex; flex-direction: column; gap: 24px">
         <AppSelect
-          v-model="materia"
+          v-model="subject"
           label="Matéria"
-          :options="[]" />
+          option-key="id"
+          :options="subjectStore.data">
+          <template #item="{ value }">
+            {{ value.description }}
+          </template>
+        </AppSelect>
 
         <AppSelect
-          v-model="tema"
+          v-model="topic"
           label="Tema"
-          :options="[]" />
+          option-key="id"
+          :options="topicOptions">
+          <template #item="{ value }">
+            {{ value.description }}
+          </template>
+        </AppSelect>
 
         <AppInputTextArea
           v-model="description"
@@ -90,12 +113,14 @@ useDraggable(responsesEl, responses, {
           rows="4" />
 
         <div style="display: flex; gap: 8px">
-          <button class="app-button -brand">
+          <button
+            class="app-button -brand"
+            @click="onSubmit()">
             {{ isEditing ? "Atualizar" : "Salvar" }}
           </button>
           <RouterLink
             class="app-button -flat"
-            to="/questions">
+            to="/question">
             Cancelar
           </RouterLink>
         </div>

@@ -1,7 +1,7 @@
 import { useSubjectGateway } from "@/gateway/subject_gateway";
 import type { SubjectModel } from "@/models/subject_model";
 import { defineStore } from "pinia";
-import { readonly, ref, toValue } from "vue";
+import { readonly, ref, toValue, type Ref } from "vue";
 
 export const useSubjectStore = defineStore("subject-store", () => {
   const subjectGateway = useSubjectGateway();
@@ -31,7 +31,7 @@ export const useSubjectStore = defineStore("subject-store", () => {
   };
 
   return {
-    data: readonly(data),
+    data: readonly(data) as unknown as SubjectModel[],
     isLoading: readonly(dataLoading),
     load,
     create,
