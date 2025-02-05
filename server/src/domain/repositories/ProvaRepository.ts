@@ -24,7 +24,7 @@ export class ProvaRepository {
         where: {
           id: id,
         },
-        relations: ['materia', 'perguntas']
+        relations: ['materia', 'perguntas', 'perguntas.professor']
       });
 
       if (!result) {
@@ -48,7 +48,7 @@ export class ProvaRepository {
     try {
 
       const result = this.repository.find({
-        relations: ['materia', 'perguntas']
+        relations: ['materia', 'perguntas', 'perguntas.professor']
       });
       
       return result;

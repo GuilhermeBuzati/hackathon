@@ -341,7 +341,7 @@ Output
                     "r1",
                     "r2",
                     "r3"
-                ]
+                ],
             },
             {
                 "id": 1,
@@ -418,7 +418,12 @@ Output
                     "r1111",
                     "r10",
                     "r3"
-                ]
+                ],
+                "professor": {
+                    "id": 3,
+                    "nome": "Professor",
+                    "email": "aluno2@gmail.com"
+                }
             }
         ]
     }
@@ -444,7 +449,12 @@ Output
                         "r1111",
                         "r10",
                         "r3"
-                    ]
+                    ],
+                    "professor": {
+                        "id": 3,
+                        "nome": "Professor",
+                        "email": "aluno2@gmail.com"
+                    }
                 }
             ]
         },
@@ -463,7 +473,12 @@ Output
                         "r1111",
                         "r10",
                         "r3"
-                    ]
+                    ],
+                    "professor": {
+                        "id": 3,
+                        "nome": "Professor",
+                        "email": "aluno2@gmail.com"
+                    }
                 }
             ]
         }

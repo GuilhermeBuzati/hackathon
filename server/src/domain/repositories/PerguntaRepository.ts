@@ -33,7 +33,7 @@ export class PerguntaRepository {
         where: {
             id: id,
         },
-        relations: ['tema']
+        relations: ['tema', 'professor']
     });
 
       if (!result) {
@@ -70,7 +70,7 @@ export class PerguntaRepository {
     try {
 
       const result = this.repository.find({        
-        relations: ['tema']
+        relations: ['tema', 'professor']
       });
       
       return result;

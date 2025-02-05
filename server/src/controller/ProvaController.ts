@@ -4,6 +4,7 @@ import { validate } from 'class-validator';
 import { ProvaDTO } from '../dto/ProvaDTO';
 import { ProvaService } from '../service/ProvaService';
 import { ProvaDTOInvalidoError } from '../errors/prova/ProvaDTOInvalidoError';
+import { ProfessorDTO } from '../dto/ProfessorDTO';
 
 
 class ProvaController {
@@ -21,7 +22,8 @@ class ProvaController {
             ...instanceToPlain(savedProva),
             perguntas: savedProva.perguntas.map(pergunta => ({
                 ...pergunta,
-                respostas: pergunta.respostas.split('|') || []
+                respostas: pergunta.respostas.split('|') || [],
+                professor: instanceToPlain(pergunta.professor)
             }))
         };
 
@@ -37,7 +39,8 @@ class ProvaController {
             ...instanceToPlain(prova),
             perguntas: prova.perguntas.map(pergunta => ({
                 ...pergunta,
-                respostas: pergunta.respostas.split('|') || []
+                respostas: pergunta.respostas.split('|') || [],
+                professor: instanceToPlain(pergunta.professor)
             }))
         };
         
@@ -56,10 +59,10 @@ class ProvaController {
             ...instanceToPlain(prova),
             perguntas: prova.perguntas?.map(pergunta => ({
                 ...pergunta,
-                respostas: pergunta.respostas.split('|') || []
-            }))
+                respostas: pergunta.respostas.split('|') || [],
+                professor: instanceToPlain(pergunta.professor)
+            })),
         }));
-        
         return res.status(200).json(provasResponse);
     }
 
@@ -75,7 +78,8 @@ class ProvaController {
             ...instanceToPlain(prova),
             perguntas: prova.perguntas.map(pergunta => ({
                 ...pergunta,
-                respostas: pergunta.respostas.split('|') || []
+                respostas: pergunta.respostas.split('|') || [],
+                professor: instanceToPlain(pergunta.professor)
             }))
         };
 
