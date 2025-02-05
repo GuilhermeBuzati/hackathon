@@ -91,7 +91,7 @@ export class MateriaRepository {
   async delete(materia: Materia): Promise<void> {
     try{
 
-      await this.repository.delete(materia);
+      await this.repository.remove(materia);
 
     } catch (error) {
       console.error("Erro desconhecido ao tentar deletar o materia:", error);
