@@ -259,7 +259,11 @@ Output
     {
         "id": 3,
         "descricao": "Brasil",
-        "periodo": "10 Serie"
+        "periodo": "9 Serie",
+        "materia": {
+            "id": 1,
+            "descricao": "Historia"
+        }
     }
 
 
@@ -270,13 +274,21 @@ Output
     [
         {
             "id": 2,
-            "descricao": "Guerra Civil",
-            "periodo": "9 Serie"
+            "descricao": "2313111",
+            "periodo": "9 Serie",
+            "materia": {
+                "id": 1,
+                "descricao": "Geografia"
+            }
         },
         {
             "id": 3,
             "descricao": "Brasil",
-            "periodo": "10 Serie"
+            "periodo": "8 Serie",
+            "materia": {
+                "id": 1,
+                "descricao": "História"
+            }
         }
     ]
 
@@ -488,7 +500,19 @@ Output
 
     {
         "id": 1,
-        "descricao": "História"
+        "descricao": "123",
+        "temaMateria": [
+            {
+                "id": 2,
+                "descricao": "2313111",
+                "periodo": "9 Serie"
+            },
+            {
+                "id": 3,
+                "descricao": "Brasil",
+                "periodo": "10 Serie"
+            }
+        ]
     }
 
 ### Estrutura - GET - "/materia"
@@ -498,12 +522,19 @@ Output
     [
         {
             "id": 1,
-            "descricao": "História"
-        },
-        {
-            "id": 2,
-            "descricao": "Matematica"
+            "descricao": "123",
+            "temaMateria": [
+                {
+                    "id": 2,
+                    "descricao": "2313111",
+                    "periodo": "9 Serie"
+                },
+                {
+                    "id": 3,
+                    "descricao": "Brasil",
+                    "periodo": "10 Serie"
+                }
+            ]
         }
     ]
-
 ---

@@ -33,6 +33,7 @@ export class TemaRepository {
         where: {
           id: id,
         },
+        relations: ["materia"]
       });
 
       if (!result) {
@@ -55,7 +56,9 @@ export class TemaRepository {
   async getAll(): Promise<Tema[]> {
     try {
 
-      const result = this.repository.find();
+      const result = this.repository.find({
+        relations: ["materia"]
+      });
       
       return result;
 
