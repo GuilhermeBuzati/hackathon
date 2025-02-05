@@ -60,6 +60,21 @@ export class ProvaRepository {
     }
   }
 
+  async getByMateriaId(materiaId: number): Promise<Prova[]> {
+    try {
+      const result = await this.repository.find({
+        where: {
+          materia: { id: materiaId },
+        }
+      });
+  
+      return result;
+    } catch (error) {
+      console.error("Erro ao buscar os provas da matéria:", error);
+      throw new Error("Erro ao tentar buscar os provas da matéria");
+    }
+  }
+
   async patchById(prova: Prova): Promise<Prova> {
     try {
  
@@ -76,7 +91,7 @@ export class ProvaRepository {
   async delete(prova: Prova): Promise<void> {
     try{
 
-      await this.repository.delete(prova);
+      await this.repository.remove(prova);
 
     } catch (error) {
       console.error("Erro desconhecido ao tentar deletar o prova:", error);

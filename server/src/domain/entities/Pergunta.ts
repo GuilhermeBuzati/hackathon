@@ -12,13 +12,13 @@ export class Pergunta {
   descricao!: string;
   
   @ManyToOne(() => Tema, (tema) => tema.perguntaTema, {
-    onDelete: "CASCADE",
+    onDelete: "SET NULL",
   })
   @JoinColumn({ name: "temaId" })
   tema!: Tema;
 
   @ManyToOne(() => Professor, (professor) => professor.perguntaProfesso, {
-    onDelete: "CASCADE",
+    onDelete: "SET NULL",
   })
   @JoinColumn({ name: "professorId" })
   professor!: Professor;

@@ -14,8 +14,4 @@ export class TemaDTO {
   @IsNotEmpty({ message: 'A matéria associada ao tema é obrigatória.' })
   materiaId!: number;
 
-  @Expose()
-  @IsNotEmpty({ message: 'O período associado ao tema é obrigatório.' })
-  periodoId!: number;
-
 }

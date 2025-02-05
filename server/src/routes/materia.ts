@@ -35,4 +35,12 @@ materiaRouter.patch('/', async (req: Request, res: Response, next: NextFunction)
     }
 });
 
+materiaRouter.delete('/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await MateriaController.delete(req, res);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default materiaRouter;

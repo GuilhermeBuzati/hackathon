@@ -19,6 +19,8 @@ import { PeriodoJaCadastradoError } from './periodo/PeriodoJaCadastradoError';
 import { EmailNaoEncontradoError } from './professor/EmailNaoEncontradoError';
 import { EmailSenhaInvalidoError } from './professor/EmailSenhaInvalidosError';
 import { LoginDTOInvalidoError } from './professor/LoginDTOInvalidoError';
+import { MateriaUtilizadaError } from './materia/MateriaUtilizadaError';
+import { TemaUtilizadaError } from './tema/TemaUtilizadaError';
 
 
 //eslint-disable-next-line
@@ -103,6 +105,14 @@ export function errorHandler(error: unknown, req: Request, res: Response, next: 
     res.status(error.statusCode).json({ message: error.details });
   }
 
+  if (error instanceof MateriaUtilizadaError) {
+    res.status(error.statusCode).json({ message: error.details });
+  }
+
+  if (error instanceof TemaUtilizadaError) {
+    res.status(error.statusCode).json({ message: error.details });
+  }
+  
   console.error(error);
 
   if (res.headersSent) {

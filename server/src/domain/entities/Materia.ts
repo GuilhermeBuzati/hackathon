@@ -9,6 +9,6 @@ export class Materia {
   @Column({ type: 'varchar', length: 50, nullable: false, unique: true })
   descricao!: string;
   
-  @OneToMany(() => Tema, (tema) => tema.materia, { cascade: true, onDelete: "CASCADE" })
+  @OneToMany(() => Tema, (tema) => tema.materia, { cascade: true, onDelete: "SET NULL" })
   temaMateria!: Tema[];
 }

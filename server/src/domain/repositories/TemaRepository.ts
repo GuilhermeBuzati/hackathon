@@ -66,6 +66,22 @@ export class TemaRepository {
     }
   }
 
+  async getByMateriaId(materiaId: number): Promise<Tema[]> {
+    try {
+      const result = await this.repository.find({
+        where: {
+          materia: { id: materiaId },
+        },
+        relations: ["materia"]
+      });
+  
+      return result;
+    } catch (error) {
+      console.error("Erro ao buscar os temas da matéria:", error);
+      throw new Error("Erro ao tentar buscar os temas da matéria");
+    }
+  }
+  
   async patchById(tema: Tema): Promise<Tema> {
     try {
  

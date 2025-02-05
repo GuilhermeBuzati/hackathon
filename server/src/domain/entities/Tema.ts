@@ -12,7 +12,7 @@ export class Tema {
   descricao!: string;
   
   @ManyToOne(() => Materia, (materia) => materia.temaMateria, {
-    onDelete: "CASCADE",
+    onDelete: "SET NULL",
   })
   @JoinColumn({ name: "materiaId" })
   materia!: Materia;
