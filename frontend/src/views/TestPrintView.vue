@@ -1,13 +1,22 @@
 <script setup lang="ts">
 import AppIcon from "@/components/AppIcon.vue";
 import AppInputText from "@/components/AppInputText.vue";
-import { useSubjectStore } from "@/store/subject_store";
+import { useTeacherStore } from "@/store/teacher_store";
+import { useTestStore } from "@/store/test_store";
 import { ref, watchEffect } from "vue";
+import { useRoute } from "vue-router";
 
-const title = ref("Prova de Economia");
-const teacher = ref("Antônio Nunes");
-const schoolClass = ref("9º Ano B");
-const subject = ref("Matemática");
+const route = useRoute();
+const store = useTestStore();
+const teacherStore = useTeacherStore();
+
+const item = store.getItem(parseInt(route.params.id as string))!;
+const teacher = teacherStore.user!;
+
+const title = ref(item.title);
+const teacherName = ref(teacher.name);
+const schoolClass = ref("");
+const subject = ref(item.subject.description);
 
 const element = ref<HTMLIFrameElement | null>(null);
 
@@ -25,6 +34,16 @@ watchEffect(() => {
   }
 
   const doc = element.value.contentDocument!;
+
+  const htmlUl = item.questions.map(
+    i => `
+          <li class="test-question no-break">
+            <header class="title">${i.description}</header>
+            <ul class="content">
+              ${i.responses.map(r => `<li>${r}</li>`)}
+            </ul>
+          </li>`,
+  );
 
   const htmlContent = `
     <html>
@@ -93,6 +112,7 @@ watchEffect(() => {
 
         .test-question {
           font-size: 12pt;
+          line-height: 14pt;
 
           & > .title {
             font-weight: 600;
@@ -104,7 +124,6 @@ watchEffect(() => {
             margin-left: 24pt;
             display: flex;
             flex-direction: column;
-            gap: 8pt;
             list-style: lower-alpha;
           }
         }
@@ -118,7 +137,7 @@ watchEffect(() => {
             <span class="value">Nota:</span>
           </p>
 
-          <p class="test-second-line">${schoolClass.value} • ${teacher.value}</p>
+          <p class="test-second-line">${schoolClass.value} • ${teacherName.value}</p>
         </div>
 
         <ul
@@ -129,68 +148,7 @@ watchEffect(() => {
             list-style: decimal;
             margin-left: 16px;
           ">
-          <li class="test-question no-break">
-            <header class="title">Quem foi aqui resolver o problema</header>
-            <ul class="content">
-              <li>Julio</li>
-              <li>Ronaldo</li>
-              <li>Carlos</li>
-            </ul>
-          </li>
-
-          <li class="test-question  no-break">
-            <header class="title">Quem foi aqui resolver o problema</header>
-            <ul class="content">
-              <li>Julio</li>
-              <li>Ronaldo</li>
-              <li>Carlos</li>
-            </ul>
-          </li>
-
-          <li class="test-question  no-break">
-            <header class="title">Quem foi aqui resolver o problema</header>
-            <ul class="content">
-              <li>Julio</li>
-              <li>Ronaldo</li>
-              <li>Carlos</li>
-            </ul>
-          </li>
-
-                <li class="test-question">
-            <header class="title">Quem foi aqui resolver o problema</header>
-            <ul class="content">
-              <li>Julio</li>
-              <li>Ronaldo</li>
-              <li>Carlos</li>
-            </ul>
-          </li>
-
-                <li class="test-question">
-            <header class="title">Quem foi aqui resolver o problema</header>
-            <ul class="content">
-              <li>Julio</li>
-              <li>Ronaldo</li>
-              <li>Carlos</li>
-            </ul>
-          </li>
-
-                <li class="test-question">
-            <header class="title">Quem foi aqui resolver o problema</header>
-            <ul class="content">
-              <li>Julio</li>
-              <li>Ronaldo</li>
-              <li>Carlos</li>
-            </ul>
-          </li>
-
-                <li class="test-question">
-            <header class="title">Quem foi aqui resolver o problema</header>
-            <ul class="content">
-              <li>Julio</li>
-              <li>Ronaldo</li>
-              <li>Carlos</li>
-            </ul>
-          </li>
+          ${htmlUl.join("   ")}
         </ul>
     </body>
   `;
@@ -206,7 +164,7 @@ watchEffect(() => {
     <div>
       <RouterLink
         class="app-back-button _mb-3"
-        to="/tests">
+        to="/test">
         <AppIcon name="chevron-left" />
         Voltar
       </RouterLink>
@@ -222,16 +180,16 @@ watchEffect(() => {
         label="Título" />
 
       <AppInputText
-        v-model="teacher"
+        v-model="teacherName"
         label="Professor" />
-
-      <AppInputText
-        v-model="schoolClass"
-        label="Turma" />
 
       <AppInputText
         v-model="subject"
         label="Matéria" />
+
+      <AppInputText
+        v-model="schoolClass"
+        label="Turma" />
 
       <div style="display: flex; justify-content: center">
         <button

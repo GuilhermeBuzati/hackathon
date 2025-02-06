@@ -9,7 +9,8 @@ import type {
   CreateQuestionParams,
   QuestionGateway,
 } from "../question_gateway";
-import type { Axios } from "axios";
+import { AxiosError, type Axios } from "axios";
+import { parseTeacher } from "@/models/teacher_model";
 
 export class AxiosQuestionGateway implements QuestionGateway {
   #http: Axios;
@@ -27,8 +28,7 @@ export class AxiosQuestionGateway implements QuestionGateway {
         respostas: params.responses,
       });
 
-      console.log(response.data);
-      throw "";
+      return ok(parseQuestion(response.data));
     } catch (e) {
       if (e instanceof Error) {
         return err(e.message);
@@ -50,6 +50,19 @@ export class AxiosQuestionGateway implements QuestionGateway {
       console.log(e);
       if (e instanceof Error) {
         return err(e.message);
+      }
+
+      return err(`${e}`);
+    }
+  }
+
+  async delete(id: number): Promise<Result<boolean>> {
+    try {
+      await this.#http.delete(`pergunta/${id}`);
+      return ok(true);
+    } catch (e) {
+      if (e instanceof AxiosError) {
+        return err(e.response?.data.message ?? "");
       }
 
       return err(`${e}`);

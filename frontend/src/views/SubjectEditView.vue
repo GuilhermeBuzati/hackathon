@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import AppConfirmationModal from "@/components/AppConfirmationModal.vue";
 import AppIcon from "@/components/AppIcon.vue";
 import SubjectCreateModal from "@/components/SubjectCreateModal.vue";
 import SubjectCreateTopic from "@/components/SubjectCreateTopic.vue";
@@ -14,10 +15,16 @@ const topicStore = useTopicStore();
 const subjectStore = useSubjectStore();
 
 const route = useRoute();
+const router = useRouter();
 
 const subject = subjectStore.selectById(Number(route.params.id));
 
-async function onRemove(topic: Omit<TopicModel, "subject">): Promise<void> {
+const createModal = ref(false);
+const deleteModal = ref(false);
+
+async function onRemoveTopic(
+  topic: Omit<TopicModel, "subject">,
+): Promise<void> {
   const error = await topicStore.delete(topic.id);
   if (error) {
     alert(error);
@@ -40,7 +47,17 @@ async function onCreate(value: {
   createModal.value = false;
 }
 
-const createModal = ref(false);
+async function onRemoveSubject(): Promise<void> {
+  const error = await subjectStore.remove(subject.value!.id);
+  if (error) {
+    alert(error);
+    deleteModal.value = false;
+    return;
+  }
+
+  router.push("/subject");
+  deleteModal.value = false;
+}
 </script>
 
 <template>
@@ -56,7 +73,9 @@ const createModal = ref(false);
         <h2 style="font-weight: bold; font-size: 32px">
           {{ subject!.description }}
         </h2>
-        <button class="app-button -danger -icon">
+        <button
+          class="app-button -danger -icon"
+          @click="deleteModal = true">
           <AppIcon name="trash" />
         </button>
       </div>
@@ -65,11 +84,13 @@ const createModal = ref(false);
     <div
       class="topics"
       v-if="subject!.topics?.length > 0">
-      <SubjectTopic
-        v-for="topic of subject!.topics"
-        :key="topic.id"
-        :topic="topic"
-        @remove="onRemove(topic)" />
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <SubjectTopic
+          v-for="topic of subject!.topics"
+          :key="topic.id"
+          :topic="topic"
+          @remove="onRemoveTopic(topic)" />
+      </div>
 
       <div style="display: flex; justify-content: center; margin-top: 8px">
         <button
@@ -101,6 +122,16 @@ const createModal = ref(false);
     <SubjectCreateTopic
       v-model:is-open="createModal"
       @create="onCreate($event)" />
+
+    <AppConfirmationModal
+      v-model:is-open="deleteModal"
+      @confirm="onRemoveSubject()">
+      <template #title> Exclusão! </template>
+
+      <template #description>
+        Deseja remover a matéria "{{ subject!.description }}"?
+      </template>
+    </AppConfirmationModal>
   </div>
 </template>
 
@@ -128,9 +159,5 @@ const createModal = ref(false);
     display: grid;
     grid-template-columns: 1fr auto;
   }
-}
-
-.subject-topic {
-  border: 1px solid var(--color-light-3);
 }
 </style>

@@ -64,10 +64,32 @@ export const useQuestionStore = defineStore("question-store", () => {
     return null;
   };
 
+  const remove = async (id: number): Promise<string | null> => {
+    const result = await questionGateway.delete(id);
+    if (result.isErr) {
+      return result.error;
+    }
+
+    const index = state.entities.findIndex(s => s.id === id);
+    if (index >= 0) {
+      state.entities.splice(index, 1);
+    }
+    return null;
+  };
+
   const reset = (): void => {
     if (state.loading) return;
     state.entities = [];
   };
 
-  return { load, reset, getItem, create, questions, isLoading, isEmpty };
+  return {
+    load,
+    reset,
+    getItem,
+    create,
+    remove,
+    questions,
+    isLoading,
+    isEmpty,
+  };
 });

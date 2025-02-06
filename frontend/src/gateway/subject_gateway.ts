@@ -6,7 +6,7 @@ export interface SubjectGateway {
   getAll(): Promise<GetAllResponse>;
   getById(id: number): Promise<GetByIdResponse>;
   create(description: string): Promise<CreateResponse>;
-  delete(id: number): Promise<boolean>;
+  delete(id: number): Promise<Result<boolean>>;
 }
 
 export type GetAllResponse = Result<SubjectModel[]>;

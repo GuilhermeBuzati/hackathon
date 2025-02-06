@@ -16,6 +16,7 @@ import {
 } from "@/gateway/axios_adapter";
 import { provideTopicGateway } from "@/gateway/topic_gateway";
 import { AxiosTopicGateway } from "@/gateway/axios_adapter/axios_topic_gateway";
+import { MittEventBus, provideEventBus } from "@/event_bus";
 
 export default <Plugin>{
   install(app) {
@@ -29,5 +30,6 @@ export default <Plugin>{
     provideSubjectGateway(app, new AxiosSubjectGateway(instance));
     provideTestGateway(app, new AxiosTestGateway(instance));
     provideTopicGateway(app, new AxiosTopicGateway(instance));
+    provideEventBus(app, new MittEventBus());
   },
 };

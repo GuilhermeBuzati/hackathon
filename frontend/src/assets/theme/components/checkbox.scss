@@ -1,0 +1,44 @@
+.app-checkbox-container {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 14px;
+}
+
+.app-checkbox {
+  display: inline-flex;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: solid 2px var(--color-light-4);
+  border-radius: 4px;
+  position: relative;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    outline-color 0.3s ease;
+  outline: transparent none;
+  color: transparent;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-brand-1);
+    outline-offset: 1px;
+  }
+
+  &:checked {
+    color: var(--color-light-1);
+    background: var(--color-brand-3);
+    border-color: var(--color-brand-3);
+  }
+
+  &:checked::before {
+    font-family: "media7";
+    content: "\e0f1";
+    width: 12px;
+    height: 12px;
+    top: -1px;
+    left: -1px;
+    position: absolute;
+  }
+}

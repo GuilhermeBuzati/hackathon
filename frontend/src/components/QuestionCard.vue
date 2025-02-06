@@ -8,6 +8,7 @@ defineProps<{ item: QuestionModel }>();
   <div class="question-card">
     <h3 class="title">{{ item.description }}</h3>
     <ul class="annotations">
+      <li>{{ item.topic.period }}</li>
       <li>{{ item.topic.description }}</li>
       <li>
         Criado por

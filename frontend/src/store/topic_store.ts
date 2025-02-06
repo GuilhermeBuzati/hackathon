@@ -10,10 +10,11 @@ import {
   type ComputedRef,
   type Ref,
 } from "vue";
-import { useSubjectStore } from "./subject_store";
+import { useEventBus } from "@/event_bus";
 
 export const useTopicStore = defineStore("topic-store", () => {
   const gateway = useTopicGateway();
+  const bus = useEventBus();
 
   const data = ref<TopicModel[]>([]);
   const dataLoading = ref(false);
@@ -41,10 +42,8 @@ export const useTopicStore = defineStore("topic-store", () => {
       return result.error;
     }
 
-    console.log(result.data);
     data.value.push(result.data);
-    const subjectStore = useSubjectStore();
-    subjectStore.addTopic(result.data);
+    bus.send("topicInclude", { topic: result.data });
     return null;
   };
 
@@ -71,8 +70,7 @@ export const useTopicStore = defineStore("topic-store", () => {
       return result.error;
     }
 
-    const subjectStore = useSubjectStore();
-    subjectStore.removeTopic(id);
+    bus.send("topicRemove", { topicId: id });
     return null;
   };
 

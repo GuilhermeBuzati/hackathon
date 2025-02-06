@@ -1,11 +1,11 @@
-import type { Axios } from "axios";
+import { AxiosError, type Axios } from "axios";
 import type {
   CreateResponse,
   GetAllResponse,
   GetByIdResponse,
   SubjectGateway,
 } from "../subject_gateway";
-import { err, ok } from "@/utils/result";
+import { err, ok, type Result } from "@/utils/result";
 import { parseSubject } from "@/models/subject_model";
 
 export class AxiosSubjectGateway implements SubjectGateway {
@@ -18,6 +18,10 @@ export class AxiosSubjectGateway implements SubjectGateway {
   async getAll(): Promise<GetAllResponse> {
     try {
       const response = await this.#http.get("/materia");
+      if (response.status === 204) {
+        return ok([]);
+      }
+
       return ok(response.data.map(parseSubject));
     } catch (e) {
       console.log("NOVO NOVO", e);
@@ -51,20 +55,24 @@ export class AxiosSubjectGateway implements SubjectGateway {
       const response = await this.#http.get(`materia/${id}`);
       return ok(response.data ? parseSubject(response.data) : null);
     } catch (e) {
-      if (e instanceof Error) {
-        return err(e.message);
+      if (e instanceof AxiosError) {
+        return err(e.response?.data.message ?? "");
       }
 
       return err(`${e}`);
     }
   }
 
-  async delete(id: number): Promise<boolean> {
+  async delete(id: number): Promise<Result<boolean>> {
     try {
       await this.#http.delete(`materia/${id}`);
-      return true;
+      return ok(true);
     } catch (e) {
-      return false;
+      if (e instanceof AxiosError) {
+        return err(e.response?.data.message ?? "");
+      }
+
+      return err(`${e}`);
     }
   }
 }

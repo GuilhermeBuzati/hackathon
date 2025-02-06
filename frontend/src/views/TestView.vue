@@ -7,14 +7,16 @@ import TestItem from "@/components/TestItem.vue";
 import { useTestStore } from "@/store/test_store";
 import { useSubjectStore } from "@/store/subject_store";
 import type { SubjectModel } from "@/models/subject_model";
-import type { TopicModel } from "@/models/topic_model";
+import type { TestModel } from "@/models/test_model";
+import { useRouter } from "vue-router";
 
-const search = ref("");
-const subject = ref<SubjectModel | null>(null);
-const topic = ref<TopicModel | null>(null);
+const router = useRouter();
 
 const store = useTestStore();
 const subjectStore = useSubjectStore();
+
+const search = ref("");
+const subject = ref<SubjectModel | null>(null);
 
 const filteredTests = computed(() => {
   let data = store.data.values();
@@ -24,13 +26,28 @@ const filteredTests = computed(() => {
     data = data.filter(s => s.title.toLowerCase().includes(searchValue));
   }
 
-  if (subject.value !== null && topic.value === null) {
-    const subjectTopics = new Set(subject.value.topics.map(s => s.id));
-    data = data.filter(s => subjectTopics.has(s.subjectId));
+  if (subject.value !== null) {
+    const subjectId = subject.value.id;
+    data = data.filter(s => subjectId === s.subject.id);
   }
 
   return data.toArray();
 });
+
+async function onRemove(item: TestModel): Promise<void> {
+  const error = await store.remove(item.id);
+  if (error) {
+    alert(error);
+  }
+}
+
+function onPrint(item: TestModel): void {
+  router.push(`/test/print/${item.id}`);
+}
+
+function onEdit(item: TestModel): void {
+  router.push("/test/" + item.id);
+}
 </script>
 
 <template>
@@ -71,7 +88,13 @@ const filteredTests = computed(() => {
       <div
         v-else
         class="test-list">
-        <TestItem />
+        <TestItem
+          v-for="test of filteredTests"
+          :key="test.id"
+          :test
+          @remove="onRemove(test)"
+          @print="onPrint(test)"
+          @edit="onEdit(test)" />
       </div>
     </div>
   </div>

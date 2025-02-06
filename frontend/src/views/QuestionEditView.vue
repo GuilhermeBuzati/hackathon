@@ -3,10 +3,10 @@ import AppIcon from "@/components/AppIcon.vue";
 import AppInputTextArea from "@/components/AppInputTextArea.vue";
 import AppInputText from "@/components/AppInputText.vue";
 import AppSelect from "@/components/AppSelect.vue";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { useDraggable } from "vue-draggable-plus";
 import AppConfirmationModal from "@/components/AppConfirmationModal.vue";
-import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import type { QuestionModel } from "@/models/question_model";
 import { useQuestionStore } from "@/store/question_store";
 import { useSubjectStore } from "@/store/subject_store";
@@ -19,8 +19,6 @@ const subjectStore = useSubjectStore();
 const topicStore = useTopicStore();
 
 const { item = null } = defineProps<{ item?: QuestionModel }>();
-
-console.log(item);
 
 const description = ref(item?.description ?? "");
 
@@ -36,11 +34,11 @@ const topicOptions = topicStore.selectDataBySubject(subject, false);
 
 const modalOpen = ref(false);
 
-const isEditing = ref(false);
+const isEditing = ref(item !== null);
 
-const route = useRoute();
+const router = useRouter();
 
-function onRemoveResposta(index: number): void {
+function onRemoveResponse(index: number): void {
   responses.value.splice(index, 1);
 }
 
@@ -48,12 +46,32 @@ function onAddResponse(): void {
   responses.value.push("");
 }
 
+async function onRemove(): Promise<void> {
+  const error = await store.remove(item!.id);
+  if (error) {
+    alert(error);
+    return;
+  }
+
+  router.push("/question");
+}
+
 async function onSubmit(): Promise<void> {
   if (responses.value.length === 0) {
     return;
   }
 
-  await store.create(description.value, topic.value!.id, responses.value);
+  const result = await store.create(
+    description.value,
+    topic.value!.id,
+    responses.value,
+  );
+  if (result) {
+    alert(result);
+    return;
+  }
+
+  router.push("/question");
 }
 
 useDraggable(responsesEl, responses, {
@@ -148,7 +166,7 @@ useDraggable(responsesEl, responses, {
               <template #iconEnd>
                 <button
                   class="btn-remove"
-                  @click="onRemoveResposta(index)"
+                  @click="onRemoveResponse(index)"
                   tabindex="-1">
                   <AppIcon name="x" />
                 </button>
@@ -167,7 +185,9 @@ useDraggable(responsesEl, responses, {
         </div>
       </div>
     </div>
-    <AppConfirmationModal v-model:is-open="modalOpen">
+    <AppConfirmationModal
+      @confirm="onRemove()"
+      v-model:is-open="modalOpen">
       <template #title> Exclusão! </template>
       <template #description>
         <p style="font-weight: bold; margin-bottom: 16px; text-align: center">

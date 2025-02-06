@@ -72,19 +72,29 @@ const router = createRouter({
           component: () => import("@/views/TestView.vue"),
         },
         {
+          path: "test/print/:id",
+          name: "test-print",
+          component: () => import("@/views/TestPrintView.vue"),
+          beforeEnter: async (to, _, next) => {
+            const id = parseInt(to.params.id as string);
+            const subjectStore = useTestStore();
+            return subjectStore.getItem(id) === null ? next("/test") : next();
+          },
+        },
+        {
           path: "test/new",
           name: "test-new",
           component: () => import("@/views/TestEditView.vue"),
         },
         {
-          path: "test/print",
-          name: "test-print",
-          component: () => import("@/views/TestPrintView.vue"),
-        },
-        {
           path: "test/:id",
           name: "test-edit",
           component: () => import("@/views/TestEditView.vue"),
+          beforeEnter: async (to, _, next) => {
+            const id = parseInt(to.params.id as string);
+            const subjectStore = useTestStore();
+            return subjectStore.getItem(id) === null ? next("/test") : next();
+          },
         },
         {
           path: "subject",

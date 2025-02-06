@@ -43,7 +43,7 @@ async function onSave(): Promise<void> {
         @click.stop
         v-if="isOpen"
         class="app-create-modal">
-        <h1 class="title">Nova Matéria</h1>
+        <h1 class="title">Nova Tema</h1>
 
         <div
           style="

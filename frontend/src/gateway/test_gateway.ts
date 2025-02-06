@@ -4,9 +4,23 @@ import { inject, type App, type InjectionKey } from "vue";
 
 export interface TestGateway {
   getAll(): Promise<GetAllResult>;
-  getById(id: number): Promise<GetByIdResult>;
+  create(input: CreateInput): Promise<Result<TestModel>>;
+  delete(id: number): Promise<Result<boolean>>;
+  update(input: UpdateInput): Promise<Result<TestModel>>;
 }
 
+export type CreateInput = {
+  title: string;
+  subjectId: number;
+  questionIds: number[];
+};
+
+export type UpdateInput = {
+  id: number;
+  title: string;
+  subjectId: number;
+  questionIds: number[];
+};
 export type GetAllResult = Result<TestModel[]>;
 export type GetByIdResult = Result<TestModel | null>;
 
