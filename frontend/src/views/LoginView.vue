@@ -19,18 +19,15 @@ const loginSchema = v.object({
 const { handleSubmit, errors, defineField } = useForm({
   validationSchema: toTypedSchema(loginSchema),
   initialValues: {
-    email: "email@email.com",
-    password: "Heli@123",
+    email: "",
+    password: "",
   },
 });
 
 const [email, emailAttrs] = defineField("email");
 const [password, passwordAttrs] = defineField("password");
 
-const loading = ref(false);
-
 const onSubmit = handleSubmit(async data => {
-  loading.value = true;
   const error = await userStore.login(data.email, data.password);
   if (error) {
     alert(error);
@@ -38,7 +35,6 @@ const onSubmit = handleSubmit(async data => {
   }
 
   router.push("/");
-  loading.value = false;
 });
 </script>
 

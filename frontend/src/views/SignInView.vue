@@ -5,8 +5,10 @@ import { useForm } from "vee-validate";
 import { toTypedSchema } from "@vee-validate/valibot";
 import { emailSchema, senhaSchema } from "@/utils/schemas";
 import { useTeacherStore } from "@/store/teacher_store";
+import { useRouter } from "vue-router";
 
 const userStore = useTeacherStore();
+const router = useRouter();
 
 const signInSchema = v.pipe(
   v.object({
@@ -27,10 +29,10 @@ const signInSchema = v.pipe(
 const { handleSubmit, errors, defineField } = useForm({
   validationSchema: toTypedSchema(signInSchema),
   initialValues: {
-    name: "herisvelton",
-    email: "email@email.com",
-    password: "Heli@123",
-    passwordConfirm: "Heli@123",
+    name: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
   },
 });
 
@@ -40,7 +42,13 @@ const [password, passwordAttrs] = defineField("password");
 const [passwordConfirm, passwordConfirmAttrs] = defineField("passwordConfirm");
 
 const onSubmit = handleSubmit(async data => {
-  await userStore.signIn(data.name, data.email, data.password);
+  const error = await userStore.signIn(data.name, data.email, data.password);
+  if (error) {
+    alert(error);
+    return;
+  }
+
+  router.push("/");
 });
 </script>
 
