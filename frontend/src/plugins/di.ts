@@ -21,7 +21,7 @@ import { MittEventBus, provideEventBus } from "@/event_bus";
 export default <Plugin>{
   install(app) {
     const instance = axios.create({
-      baseURL: import.meta.env.VITE_APP_BACKEND_URL,
+      baseURL: import.meta.env.VITE_APP_BACKEND_URL ?? "http://localhost:3002",
     });
 
     provideHttpConfig(app, new AxiosHttpConfig(instance));
