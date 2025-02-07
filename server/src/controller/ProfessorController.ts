@@ -22,16 +22,12 @@ class ProfessorController {
 
     const savedProfessor = await this.service.create(professorDTO);
 
-    const token = await this.authService.login({
+    const result = await this.authService.login({
       email: savedProfessor.email,
       senha: senha,
     });
 
-    const professorResponse = instanceToPlain(savedProfessor);
-
-    professorResponse.token = token;
-
-    return res.status(201).json(professorResponse);
+    return res.status(201).json(result);
   }
 
   async getById(req: Request, res: Response): Promise<Response> {

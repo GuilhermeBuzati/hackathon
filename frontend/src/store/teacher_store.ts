@@ -77,6 +77,7 @@ export const useTeacherStore = defineStore("teacher-store", () => {
     password: string,
   ): Promise<string | null> => {
     const result = await teacherGateway.signIn({ name, email, password });
+    console.log("SIGNIN RESULT", result);
     if (result.isErr) {
       resetStateAndStorage();
       return result.error;
@@ -88,6 +89,7 @@ export const useTeacherStore = defineStore("teacher-store", () => {
       name: result.data.name,
     };
 
+    console.log("OI OI OI");
     httpConfig.addAuthorization(result.data.token);
     localStorage.setItem("teacher:token", result.data.token);
     localStorage.setItem("teacher:data", JSON.stringify(data.value));
