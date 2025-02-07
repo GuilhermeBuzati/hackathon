@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  vue-app:
+    build: .
+    container_name: frontend_grupo_38
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules 
+    command: npm run preview
+

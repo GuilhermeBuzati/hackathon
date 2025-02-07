@@ -3,28 +3,32 @@ version: '3.8'
 services:
   api:
     build:
-      context: . 
+      context: ./server
     container_name: server_grupo_38
+    env_file:
+      - .env
     ports:
       - "${PORT}:${PORT}"
-    environment:
-      - .env
     volumes:
-      - .:/app 
-      - /app/node_modules 
+      - ./server:/app
+      - /app/node_modules
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - grupo_38_network
 
   db:
     image: postgres:13
     container_name: db_hackathon_grupo_38
+    env_file:
+      - .env
     ports:
       - "${DB_PORT}:${DB_PORT}"
     environment:
       POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD} 
-      POSTGRES_DB: ${DB_DATABASE} 
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "${DB_USERNAME}", "-d", "${DB_DATABASE}"]
       interval: 10s
@@ -33,6 +37,27 @@ services:
       timeout: 5s
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - grupo_38_network
+
+  vue-app:
+    build:
+      context: ./frontend
+    container_name: frontend_grupo_38
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - api
+    networks:
+      - grupo_38_network
+    command: npm run start
 
 volumes:
   postgres_data:
+
+networks:
+  grupo_38_network:
+    driver: bridge
